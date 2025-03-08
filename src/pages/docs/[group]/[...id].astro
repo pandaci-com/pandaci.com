@@ -8,44 +8,44 @@ import Header from "../../../components/docs/header.astro";
 import NotePencil from "phosphor-astro/PencilSimpleLine.astro";
 
 export async function getStaticPaths() {
-    const docs = await getCollection("docs");
+  const docs = await getCollection("docs");
 
-    return docs
-        .sort((a, b) => a.id.localeCompare(b.id))
-        .map((doc, i) => {
-            const tokens = doc
-                .filePath!.replace(".mdoc", "")
-                .replace("src/content/docs/", "");
+  return docs
+    .sort((a, b) => a.id.localeCompare(b.id))
+    .map((doc, i) => {
+      const tokens = doc
+        .filePath!.replace(".mdoc", "")
+        .replace("src/content/docs/", "");
 
-            const [groupRaw, sectionRaw, ...id] = tokens.split("/");
+      const [groupRaw, sectionRaw, ...id] = tokens.split("/");
 
-            const group = groupRaw.replace(/\d{2}-/, "").toLowerCase();
+      const group = groupRaw.replace(/\d{2}-/, "").toLowerCase();
 
-            const section = sectionRaw.replace(/\d{2}-/, "");
+      const section = sectionRaw.replace(/\d{2}-/, "");
 
-            return {
-                params: {
-                    group: group,
-                    id: [section, ...id]
-                        .join("/")
-                        .replace(/\/\d{2}-/g, "/")
-                        .toLowerCase(),
-                },
-                props: {
-                    doc,
-                    group: groupRaw,
-                    section,
-                    prevDoc:
-                        docs[i - 1]?.filePath?.split("/").at(-3) === groupRaw
-                            ? docs[i - 1]
-                            : null,
-                    nextDoc:
-                        docs[i + 1]?.filePath?.split("/").at(-3) === groupRaw
-                            ? docs[i + 1]
-                            : null,
-                },
-            };
-        });
+      return {
+        params: {
+          group: group,
+          id: [section, ...id]
+            .join("/")
+            .replace(/\/\d{2}-/g, "/")
+            .toLowerCase(),
+        },
+        props: {
+          doc,
+          group: groupRaw,
+          section,
+          prevDoc:
+            docs[i - 1]?.filePath?.split("/").at(-3) === groupRaw
+              ? docs[i - 1]
+              : null,
+          nextDoc:
+            docs[i + 1]?.filePath?.split("/").at(-3) === groupRaw
+              ? docs[i + 1]
+              : null,
+        },
+      };
+    });
 }
 
 const { doc, section, group, prevDoc, nextDoc } = Astro.props;
@@ -53,146 +53,140 @@ const { doc, section, group, prevDoc, nextDoc } = Astro.props;
 const { Content, headings } = await render(doc);
 
 const groups = (await getCollection("docs"))
-    .sort((a, b) => a.id.localeCompare(b.id))
-    .map((doc) => {
-        const tokens = doc
-            .filePath!.replace(".mdoc", "")
-            .replace("src/content/docs/", "");
+  .sort((a, b) => a.id.localeCompare(b.id))
+  .map((doc) => {
+    const tokens = doc
+      .filePath!.replace(".mdoc", "")
+      .replace("src/content/docs/", "");
 
-        const [group, section, page] = tokens.split("/");
+    const [group, section, page] = tokens.split("/");
 
-        return {
-            group: group.replace(/\d{2}-/, ""),
-            section: section.replace(/\d{2}-/, ""),
-            page: page.replace(/\d{2}-/, ""),
-            groupRaw: group,
-            sectionRaw: section,
-            pageRaw: page,
-        };
-    })
-    .reduce(
-        (acc, { group, page, section }) => {
-            if (acc.some((item) => item.group === group)) {
-                return acc;
-            }
+    return {
+      group: group.replace(/\d{2}-/, ""),
+      section: section.replace(/\d{2}-/, ""),
+      page: page.replace(/\d{2}-/, ""),
+      groupRaw: group,
+      sectionRaw: section,
+      pageRaw: page,
+    };
+  })
+  .reduce(
+    (acc, { group, page, section }) => {
+      if (acc.some((item) => item.group === group)) {
+        return acc;
+      }
 
-            return [
-                ...acc,
-                {
-                    label: group.replaceAll("-", " "),
-                    href: `/docs/${group.toLowerCase()}/${section.toLowerCase()}/${page.toLowerCase()}`,
-                    group,
-                },
-            ];
+      return [
+        ...acc,
+        {
+          label: group.replaceAll("-", " "),
+          href: `/docs/${group.toLowerCase()}/${section.toLowerCase()}/${page.toLowerCase()}`,
+          group,
         },
-        [] as {
-            label: string;
-            href: string;
-            group: string;
-        }[],
-    );
+      ];
+    },
+    [] as {
+      label: string;
+      href: string;
+      group: string;
+    }[]
+  );
 ---
 
 <Layout title={doc.data.title} description={doc.data.description}>
-    <div class="mx-auto px-4 pt-12">
-        <Header groups={groups} currentID={doc.id} currentGroup={group} />
+  <div class="mx-auto px-4 pt-12">
+    <Header groups={groups} currentID={doc.id} currentGroup={group} />
+    <div
+      class="relative mx-auto flex w-full flex-auto justify-center md:px-2 max-w-8xl grow"
+    >
+      <div
+        class="hidden shrink-0 md:w-52 lg:w-60 md:relative md:block md:flex-none border-outline-variant border-r"
+      >
+        <Nav currentGroup={group} currentID={doc.id} />
+      </div>
+      <div
+        class="h-full grow pt-8 md:pl-6 md:pr-0 xl:px-12 max-w-full px-4 md:max-w-[calc(100dvw-16rem)] min-h-[calc(100vh-6.525rem)]"
+      >
+        <header class="mb-8">
+          <p class="text-sm font-bold mb-1 text-primary first-letter:uppercase">
+            {section}
+          </p>
+          <h1
+            class="inline-block text-2xl sm:text-3xl font-extrabold text-on-surface tracking-tight"
+          >
+            {doc?.data.title}
+          </h1>
+          <p class="text-on-surface-variant mt-4">
+            {doc?.data.description}
+          </p>
+        </header>
         <div
-            class="relative mx-auto flex w-full flex-auto justify-center md:px-2 max-w-8xl grow"
+          class={clsx(
+            // Border
+            "prose-zinc dark:prose-invert prose max-w-3xl",
+            // Bold
+            "prose-strong:text-on-surface",
+            // Links
+            "prose-a:text-on-surface prose-a:underline-offset-4 prose-a:decoration-1 prose-a:hover:decoration-2 prose-a:decoration-primary",
+            // Headers
+            "prose-h1:scroll-mt-32 prose-h2:scroll-mt-32 prose-h3:scroll-mt-32 prose-h4:scroll-mt-32 prose-h5:scroll-mt-32 prose-h6:scroll-mt-32",
+            // Code
+            "prose-code:before:content-none prose-code:after:content-none"
+          )}
         >
-            <div
-                class="hidden shrink-0 md:w-52 lg:w-60 md:relative md:block md:flex-none border-outline-variant border-r"
+          <Content />
+          <footer class="py-8">
+            <div>
+              <a
+                class="not-prose text-on-surface-variant flex items-center space-x-2 hover:text-on-surface text-sm"
+                href={`https://github.com/pandaci-com/pandaci.com/blob/main/${doc.filePath}`}
+              >
+                <NotePencil class="size-4" />
+                <span>Edit this page</span>
+              </a>
+            </div>
+            <nav
+              class="flex gap-8 py-4 not-prose border-t border-outline-variant mt-2"
             >
-                <Nav currentGroup={group} currentID={doc.id} />
-            </div>
-            <div
-                class="h-full grow pt-8 md:pl-6 md:pr-0 xl:px-12 max-w-full px-4 md:max-w-[calc(100dvw-16rem)] min-h-[calc(100vh-6.525rem)]"
-            >
-                <header class="mb-8">
-                    <p
-                        class="text-sm font-bold mb-1 text-primary first-letter:uppercase"
-                    >
-                        {section}
-                    </p>
-                    <h1
-                        class="inline-block text-2xl sm:text-3xl font-extrabold text-on-surface tracking-tight"
-                    >
-                        {doc?.data.title}
-                    </h1>
-                    <p class="text-on-surface-variant mt-4">
-                        {doc?.data.description}
-                    </p>
-                </header>
-                <div
-                    class={clsx(
-                        // Border
-                        "prose-zinc dark:prose-invert prose max-w-3xl",
-                        // Bold
-                        "prose-strong:text-on-surface",
-                        // Links
-                        "prose-a:text-on-surface prose-a:underline-offset-4 prose-a:decoration-1 prose-a:hover:decoration-2 prose-a:decoration-primary",
-                        // Headers
-                        "prose-h1:scroll-mt-32 prose-h2:scroll-mt-32 prose-h3:scroll-mt-32 prose-h4:scroll-mt-32 prose-h5:scroll-mt-32 prose-h6:scroll-mt-32",
-                        // Code
-                        "prose-code:before:content-none prose-code:after:content-none",
-                    )}
-                >
-                    <Content />
-                    <footer class="py-8">
-                        <div>
-                            <a
-                                class="not-prose text-on-surface-variant flex items-center space-x-2 hover:text-on-surface text-sm"
-                                href={`https://github.com/alfiejones/pandaci-site/blob/main/${doc.filePath}`}
-                            >
-                                <NotePencil class="size-4" />
-                                <span>Edit this page</span>
-                            </a>
-                        </div>
-                        <nav
-                            class="flex gap-8 py-4 not-prose border-t border-outline-variant mt-2"
-                        >
-                            {
-                                prevDoc && (
-                                    <a
-                                        href={`${prevDoc
-                                            .filePath!.toLowerCase()
-                                            .replace(/\/\d{2}-/g, "/")
-                                            .replace(/\.mdoc/, "")
-                                            .replace("src/content", "")}`}
-                                        class="px-4 py-2 flex flex-col w-1/2 border border-outline-variant hover:border-outline transition rounded"
-                                    >
-                                        <span class="text-sm text-primary">
-                                            Previous page
-                                        </span>
-                                        <span>{prevDoc.data.title}</span>
-                                    </a>
-                                )
-                            }
+              {
+                prevDoc && (
+                  <a
+                    href={`${prevDoc
+                      .filePath!.toLowerCase()
+                      .replace(/\/\d{2}-/g, "/")
+                      .replace(/\.mdoc/, "")
+                      .replace("src/content", "")}`}
+                    class="px-4 py-2 flex flex-col w-1/2 border border-outline-variant hover:border-outline transition rounded"
+                  >
+                    <span class="text-sm text-primary">Previous page</span>
+                    <span>{prevDoc.data.title}</span>
+                  </a>
+                )
+              }
 
-                            {
-                                nextDoc && (
-                                    <a
-                                        class="ml-auto px-4 py-2 text-right flex flex-col w-1/2 border border-outline-variant hover:border-outline transition rounded"
-                                        href={`${nextDoc
-                                            .filePath!.toLowerCase()
-                                            .replace(/\/\d{2}-/g, "/")
-                                            .replace(/\.mdoc/, "")
-                                            .replace("src/content", "")}`}
-                                    >
-                                        <span class="text-primary text-sm">
-                                            Next page
-                                        </span>
-                                        <span>{nextDoc.data.title}</span>
-                                    </a>
-                                )
-                            }
-                        </nav>
-                    </footer>
-                </div>
-            </div>
-
-            <div class="hidden xl:relative xl:block xl:flex-none">
-                <Contents headings={headings} />
-            </div>
+              {
+                nextDoc && (
+                  <a
+                    class="ml-auto px-4 py-2 text-right flex flex-col w-1/2 border border-outline-variant hover:border-outline transition rounded"
+                    href={`${nextDoc
+                      .filePath!.toLowerCase()
+                      .replace(/\/\d{2}-/g, "/")
+                      .replace(/\.mdoc/, "")
+                      .replace("src/content", "")}`}
+                  >
+                    <span class="text-primary text-sm">Next page</span>
+                    <span>{nextDoc.data.title}</span>
+                  </a>
+                )
+              }
+            </nav>
+          </footer>
         </div>
+      </div>
+
+      <div class="hidden xl:relative xl:block xl:flex-none">
+        <Contents headings={headings} />
+      </div>
     </div>
+  </div>
 </Layout>
