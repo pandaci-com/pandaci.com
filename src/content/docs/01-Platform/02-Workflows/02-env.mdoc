@@ -25,3 +25,17 @@ These aren't prefixed.
 Please create an [issue](https://github.com/pandaci-com/pandaci/issues) if you need additional environment variables.
 
 {% /alert %}
+
+## Git fork protection
+
+If you receive a pull request from a fork of your repository, we'll block the workflow from running. 
+This is to prevent malicious code from accessing your secrets and using your usage limits.
+
+{% alert level="info" %}
+
+We are planning on improving this feature in the near future.
+
+We'd like to run forks if they're from a member of your organization and offer the ability to run workflows after
+manual approval.
+    
+{% /alert %}
