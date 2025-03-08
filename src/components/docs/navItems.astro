@@ -1,0 +1,76 @@
+---
+import { getCollection } from "astro:content";
+import clsx from "clsx";
+import PageIcon from "./pageIcon.astro";
+
+interface Props {
+  currentID: string;
+  currentGroup: string;
+}
+
+const { currentID, currentGroup } = Astro.props;
+
+const docs = await getCollection("docs", ({ filePath }) =>
+  filePath?.startsWith(`src/content/docs/${currentGroup}/`)
+);
+const groupedDocs = docs
+  .sort((a, b) => a.id.localeCompare(b.id))
+  .reduce(
+    (acc, doc) => {
+      const id = doc
+        .filePath!.replace("src/content/docs/", "/")
+        .replace(".mdoc", "")
+        .replace(/\/\d{2}-/g, "/")
+        .replace("/", "");
+
+      const [_, group] = id.split("/");
+
+      if (!acc[group]) {
+        acc[group] = [];
+      }
+      acc[group].push({
+        ...doc,
+        id,
+      });
+      return acc;
+    },
+    {} as Record<string, typeof docs>
+  );
+
+const currentDocID = currentID
+  ?.replace(/\/\d{2}-/g, "/")
+  .replace(/\d{2}-/g, "");
+---
+
+<ul class="space-y-9" role="list">
+  {
+    Object.entries(groupedDocs).map(([group, docs]) => (
+      <li>
+        <h2 class="font-display font-medium text-on-surface">{group}</h2>
+        <ul class="mt-2 md:mt-4" role="list">
+          {docs.map((doc) => (
+            <li class="relative">
+              <a
+                class={clsx(
+                  "flex space-x-2 items-center w-full pl-3 border-l py-2",
+                  currentDocID.toLowerCase() === doc.id.toLowerCase()
+                    ? "before:bg-primary font-semibold text-primary border-primary"
+                    : "before:bg-on-surface-variant before:hidden hover:before:block border-outline-variant hover:border-outline text-on-surface-variant hover:text-on-surface"
+                )}
+                href={`/docs/${doc.id.toLowerCase()}`}
+              >
+                {doc.data.icon && (
+                  <PageIcon
+                    icon={doc.data.icon}
+                    active={currentDocID.toLowerCase() === doc.id.toLowerCase()}
+                  />
+                )}
+                <span>{doc.data.title}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </li>
+    ))
+  }
+</ul>

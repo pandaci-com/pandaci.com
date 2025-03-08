@@ -1,0 +1,84 @@
+---
+title: Workflow triggers
+description: Configure which git events trigger your workflows
+icon: GitBranch
+---
+
+## Overview
+
+You can configure the triggers using the workflow config object.
+
+
+{% alert level="knowledge" %}
+
+**Workflow configs are staticaly parsed** - This means that you can't use variables or functions to define the config.
+
+{% /alert %}
+
+We default to triggering on every push.
+
+### Example
+
+```typescript {% title=".pandaci/triggers.workflow.ts" %}
+import { type Config } from "jsr:@pandaci/workflow";
+
+export const config: Config = {
+    on: {
+        push: {
+            branches: ["main"]
+        },
+        pr: {
+            events: ["opened", "synchronize", "reopened"],
+            targetBranches: ["main"]
+        }
+    }
+};
+```
+
+## Glob matching
+
+You can use glob patterns to match branches.
+
+### Examples
+- `main` - Matches the branch named **main**
+- `feature/*` - Matches all branches starting with **feature/**
+- `*` - Matches all branches
+
+
+## Push configuration
+
+You can configure the push event to trigger on specific branches.
+
+### branches
+
+- **Type**: `string[]`
+
+The branches to trigger the workflow on.
+
+### branchesIgnore
+
+- **Type**: `string[]`
+
+The branches to ignore when triggering the workflow.
+
+## Pull Request configuration
+
+You can configure the pull request event to trigger on specific events and target branches.
+
+### events
+
+- **Type**: `('opened', 'closed', 'reopened', 'synchronize')[]`
+
+The events to trigger the workflow on.
+
+### targetBranches
+
+- **Type**: `string[]`
+
+The target branches to trigger the workflow on.
+
+### targetBranchesIgnore
+
+- **Type**: `string[]`
+
+The target branches to ignore when triggering the workflow.

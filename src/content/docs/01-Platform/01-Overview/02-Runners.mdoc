@@ -1,0 +1,67 @@
+---
+title: Runners
+description: Runners are the agents that execute your workflows
+icon: HardDrives 
+---
+
+## Cloud runners
+
+Cloud runners are isolated virtual machines that execute your workflows. We use Fly.io to provide these runners. They are fast, secure, and can be scaled up to 16 cores.
+
+### Pricing
+
+We use build minutes to calculate the cost of running your workflows. Build minutes are calculated by multiplying the number of cores by the duration of the job in minutes (rounded up).
+
+
+### Available runners
+
+We currently only support Linux runners. The image is based on the Ubuntu 24.04 docker image.
+It's a minimal image with only the necessary tools installed.
+
+{% table %}
+* Runner name
+* Cores
+* Memory
+* Storage
+* Build minute multiplier
+---
+* ubuntu-1x
+* 1
+* 4GB
+* 32GB
+* 1x
+---
+* ubuntu-2x
+* 2
+* 8GB
+* 64GB
+* 2x
+---
+* ubuntu-4x
+* 4
+* 16GB
+* 128GB
+* 4x
+---
+* ubuntu-8x
+* 8
+* 32GB
+* 256GB
+* 8x
+---
+* ubuntu-16x
+* 16
+* 64GB
+* 512GB
+* 16x
+{% /table %}
+
+Your plan determines which runners you can use, how many build minutes you have, and how much you pay for additional build minutes. Please refer to our [pricing page](/pricing) for more information.
+
+### Default runner
+
+The default runner is `ubuntu-4x`. You can change the runner by specifying the `runner` option in the `job` function.
+
+## Self-hosted runners
+
+We currently don't support self-hosted runners. If you need this feature, please let us know by [contacting us](mailto:support@pandaci.com).

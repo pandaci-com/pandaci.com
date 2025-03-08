@@ -1,0 +1,149 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import Contents from "../../components/docs/contents.astro";
+import clsx from "clsx";
+import Nav from "../../components/docs/nav.astro";
+import MobileHeader from "../../components/docs/mobileHeader.svelte";
+
+export async function getStaticPaths() {
+    const legal = await getCollection("legal");
+
+    return legal
+        .sort((a, b) => a.id.localeCompare(b.id))
+        .map((doc, i) => {
+            const tokens = doc
+                .filePath!.replace(".mdoc", "")
+                .replace("src/content/legal/", "");
+
+            const [id] = tokens.split("/");
+
+            return {
+                params: {
+                    id,
+                },
+                props: {
+                    doc,
+                    legal,
+                },
+            };
+        });
+}
+
+const { doc, legal } = Astro.props;
+
+const { Content, headings } = await render(doc);
+---
+
+<Layout title={doc.data.title} description={doc.data.description}>
+    <div class="mx-auto">
+        <div class="md:hidden py-4 w-full border-b border-outline-variant">
+            <MobileHeader header={false} currentGroup="Documents" client:load>
+                <ul
+                    class="mt-2 space-y-2 border-l-2 md:mt-4 md:space-y-4 border-outline-variant"
+                    role="list"
+                >
+                    {
+                        legal.map(({ id, data }) => (
+                            <li class="relative">
+                                <a
+                                    class={clsx(
+                                        "block w-full capitalize pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full",
+                                        doc.id.toLowerCase() ===
+                                            id.toLowerCase()
+                                            ? "before:bg-primary font-semibold text-primary"
+                                            : "before:bg-on-surface-variant before:hidden hover:before:block text-on-surface-variant hover:text-on-surface",
+                                    )}
+                                    href={`/legal/${id.toLowerCase()}`}
+                                >
+                                    {data.title}
+                                </a>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </MobileHeader>
+        </div>
+        <div
+            class="relative px-4 mx-auto flex w-full flex-auto justify-center md:px-6 max-w-8xl grow"
+        >
+            <div
+                class="hidden shrink-0 md:w-52 lg:w-60 md:relative md:block md:flex-none border-outline-variant border-r"
+            >
+                <div class="sticky top-[6.5rem] lg:w-60 w-52">
+                    <div
+                        class="overflow-x-hidden -ml-0.5 py-6 pl-0.5 max-h-[calc(100vh-5rem)]"
+                    >
+                        <nav class="text-base md:text-sm mx-4 mt-4">
+                            <h2
+                                class="font-display font-medium text-on-surface"
+                            >
+                                Documents
+                            </h2>
+                            <ul
+                                class="mt-2 space-y-2 border-l-2 md:mt-4 md:space-y-4 border-outline-variant"
+                                role="list"
+                            >
+                                {
+                                    legal.map(({ id, data }) => (
+                                        <li class="relative">
+                                            <a
+                                                class={clsx(
+                                                    "block w-full capitalize pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full",
+                                                    doc.id.toLowerCase() ===
+                                                        id.toLowerCase()
+                                                        ? "before:bg-primary font-semibold text-primary"
+                                                        : "before:bg-on-surface-variant before:hidden hover:before:block text-on-surface-variant hover:text-on-surface",
+                                                )}
+                                                href={`/legal/${id.toLowerCase()}`}
+                                            >
+                                                {data.title}
+                                            </a>
+                                        </li>
+                                    ))
+                                }
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="h-full mb-24 grow pt-8 md:pl-6 md:pr-0 xl:px-12 max-w-full px-4 md:max-w-[calc(100dvw-16rem)] min-h-[calc(100vh-6.525rem)]"
+            >
+                <header>
+                    <p
+                        class="text-sm font-bold mb-1 text-primary first-letter:uppercase"
+                    >
+                        Legal
+                    </p>
+                    <h1
+                        class="inline-block text-2xl sm:text-3xl font-extrabold text-on-surface tracking-tight"
+                    >
+                        {doc?.data.title}
+                    </h1>
+                    <p class="text-on-surface-variant mt-4">
+                        {doc?.data.description}
+                    </p>
+                </header>
+                <div
+                    class={clsx(
+                        // Border
+                        "prose-zinc dark:prose-invert prose max-w-3xl",
+                        // Bold
+                        "prose-strong:text-on-surface",
+                        // Links
+                        "prose-a:text-on-surface prose-a:underline-offset-4 prose-a:decoration-1 prose-a:hover:decoration-2 prose-a:decoration-primary",
+                        // Headers
+                        "prose-h1:scroll-mt-32 prose-h2:scroll-mt-32 prose-h3:scroll-mt-32 prose-h4:scroll-mt-32 prose-h5:scroll-mt-32 prose-h6:scroll-mt-32",
+                    )}
+                >
+                    <Content />
+                </div>
+            </div>
+
+            <div class="hidden xl:relative xl:block xl:flex-none">
+                <Contents headings={headings} />
+            </div>
+        </div>
+    </div>
+</Layout>

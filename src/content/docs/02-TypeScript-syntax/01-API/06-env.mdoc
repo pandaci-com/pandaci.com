@@ -1,0 +1,48 @@
+---
+title: Environment Variables
+description: How to use environment variables in PandaCI
+icon: Vault
+---
+
+{% alert level="knowledge" %}
+
+See all available environment variables in the [workflow environment](/docs/platform/workflows/env).
+
+You can also set your own environment variables using [secrets](/docs/platform/overview/secrets).
+
+{% /alert %}
+
+
+## Example
+
+```typescript {% title=".pandaci/env.workflow.ts" %}
+import { docker, $, env } from "jsr:@pandaci/workflow";
+
+docker("ubuntu:latest", () => {
+  $`echo "Hello, world! from branch: ${env.PANDACI_BRANCH}"`;
+});
+```
+
+## Using custom types
+
+You can use custom types to define your own environment variables.
+
+```typescript {% title=".pandaci/custom-env.workflow.ts" %}
+import { docker, $, env as rawEnv, type Env } from "jsr:@pandaci/workflow";
+
+const env = rawEnv as Env<{
+  MY_ENV_VAR: string;
+}>;
+
+docker("ubuntu:latest", () => {
+  // typesafe environment variable
+  $`echo $MY_ENV_VAR`.env({ MY_ENV_VAR: env.MY_ENV_VAR });
+});
+```
+
+{% alert level="info" %}
+
+Whilst you can pass the **env** object directly to the **env** method,
+we recommend only passing the specific environment variables you need to avoid leaking sensitive information.
+
+{% /alert %}

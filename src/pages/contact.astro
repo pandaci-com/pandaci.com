@@ -1,0 +1,68 @@
+---
+import GithubLogo from "phosphor-astro/GithubLogo.astro";
+import EmailIcon from "phosphor-astro/Envelope.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Support"
+  description="Get in touch with our sales, bug reports, and technical support teams."
+>
+  <div class="isolate bg-surface px-6 py-24 sm:py-32 lg:px-8">
+    <div class="mx-auto max-w-2xl sm:text-center">
+      <h2
+        class="text-4xl font-semibold tracking-tight text-balance text-on-surface sm:text-5xl"
+      >
+        Contact us
+      </h2>
+      <p class="mt-2 text-lg/8 text-on-surface-variant">
+        Need help with your account, have a sales inquiry, or anything else?
+      </p>
+    </div>
+    <div class="mx-auto mt-20 max-w-lg space-y-16">
+      <div class="flex gap-x-6">
+        <div
+          class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary"
+        >
+          <EmailIcon class="size-6 fill-on-surface" />
+        </div>
+        <div>
+          <h3 class="text-base/7 font-semibold text-on-surface">
+            Email support
+          </h3>
+          <p class="mt-2 text-base/7 text-on-surface-variant">
+            Send us an email and we'll get back to you as soon as possible.
+          </p>
+          <p class="mt-4 text-sm/6 font-semibold">
+            <a href="mailto:support@pandaci.com" class="text-primary">
+              support@pandaci.com <span aria-hidden="true">&rarr;</span>
+            </a>
+          </p>
+        </div>
+      </div>
+      <div class="flex gap-x-6">
+        <div
+          class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary"
+        >
+          <GithubLogo class="size-6 fill-on-surface" />
+        </div>
+        <div>
+          <h3 class="text-base/7 font-semibold text-on-surface">
+            Github issues
+          </h3>
+          <p class="mt-2 text-base/7 text-on-surface-variant">
+            Report a bug or request a feature on our Github repository.
+          </p>
+          <p class="mt-4 text-sm/6 font-semibold">
+            <a
+              href="https://github.com/pandaci-com/pandaci/issues"
+              class="text-primary"
+            >
+              Raise an issue <span aria-hidden="true">&rarr;</span>
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

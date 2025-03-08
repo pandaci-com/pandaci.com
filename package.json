@@ -1,0 +1,36 @@
+{
+  "name": "pandaci.com",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/markdoc": "^0.12.10",
+    "@astrojs/mdx": "^4.1.0",
+    "@astrojs/sitemap": "^3.2.1",
+    "@astrojs/svelte": "^7.0.5",
+    "@docsearch/js": "^3.9.0",
+    "@zag-js/dialog": "^1.3.1",
+    "@zag-js/popover": "^1.3.1",
+    "@zag-js/select": "^1.3.1",
+    "@zag-js/svelte": "^1.3.1",
+    "@zag-js/tabs": "^1.3.1",
+    "astro": "^5.4.2",
+    "clsx": "^2.1.1",
+    "motion": "^12.4.10",
+    "phosphor-astro": "^2.1.0",
+    "sharp": "^0.33.5",
+    "svelte": "^5.22.5",
+    "typescript": "^5.8.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.16",
+    "@tailwindcss/vite": "4.0.11",
+    "shiki": "^3.1.0",
+    "tailwindcss": "4.0.11"
+  },
+  "packageManager": "pnpm@10.5.2+sha512.da9dc28cd3ff40d0592188235ab25d3202add8a207afbedc682220e4a0029ffbff4562102b9e6e46b4e3f9e8bd53e6d05de48544b0c57d4b0179e22c76d1199b"
+}

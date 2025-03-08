@@ -1,0 +1,14 @@
+---
+import { Image as AstroImage } from "astro:assets";
+interface Props {
+  __optimizedSrc: ImageMetadata;
+  alt: string;
+}
+const { __optimizedSrc, alt } = Astro.props;
+---
+
+<AstroImage
+  class="rounded-lg ring-1 ring-outline-variant"
+  src={__optimizedSrc}
+  alt={alt}
+/>

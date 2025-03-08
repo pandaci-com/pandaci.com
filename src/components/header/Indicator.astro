@@ -1,0 +1,19 @@
+---
+interface Props {
+    href: string;
+}
+
+const { href } = Astro.props;
+---
+
+{
+    (Astro.url.pathname === href ||
+        (href !== "/" && Astro.url.pathname.startsWith(href))) && (
+        <span
+            aria-hidden="true"
+            class="bg-surface absolute w-full h-[calc(100%+1px)] left-0 inset-0
+                before:absolute before:border-r before:top-0 before:h-full before:border-outline-variant before:w-[10px] before:left-0 before:z-10
+                after:absolute after:border-l after:top-0 after:h-full after:border-outline-variant after:w-[10px] after:right-0 before:rounded-br-lg after:rounded-bl-lg before:border-b after:border-b"
+        />
+    )
+}

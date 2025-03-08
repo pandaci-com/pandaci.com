@@ -1,0 +1,60 @@
+---
+import "../styles/tailwind.css";
+import { ClientRouter } from "astro:transitions";
+import Header from "../components/header/Header.astro";
+import Footer from "../components/Footer.astro";
+import PostHog from "../components/posthog.astro";
+
+interface Props {
+    title: string;
+    description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="scheme-light dark:scheme-dark dark">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="sitemap" href="/sitemap-index.xml" />
+        <title>PandaCI - {title}</title>
+        <meta name="description" content={description} />
+        <PostHog />
+        <link
+            rel="preconnect"
+            href="https://YKWRMQV62Y-dsn.algolia.net"
+            crossorigin
+        />
+        <ClientRouter />
+    </head>
+    <body
+        class="dark:selection:bg-teal-950 dark:selection:text-teal-50 selection:bg-teal-600 selection:text-teal-50"
+    >
+        <Header />
+        <div class="mt-14 min-h-[calc(100vh-3.5rem)] overscroll-y-none">
+            <main>
+                <slot />
+            </main>
+        </div>
+        <Footer />
+    </body>
+</html>
+
+<style>
+    html,
+    body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        /* background-color: theme("colors.white"); */
+    }
+    @media (prefers-color-scheme: dark) {
+        html,
+        body {
+            /* background-color: theme("colors.zinc.950"); */
+        }
+    }
+</style>

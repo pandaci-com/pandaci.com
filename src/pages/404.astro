@@ -1,0 +1,93 @@
+---
+import Layout from "../layouts/Layout.astro";
+import CaretRight from "phosphor-astro/CaretRight.astro";
+import Button from "../components/Button.astro";
+import BookOpen from "phosphor-astro/BookOpenFill.astro";
+import CreditCard from "phosphor-astro/CreditCardFill.astro";
+---
+
+<Layout title="Not Found" description="This page does not exist">
+  <div class="mx-auto mt-20 px-4 max-w-2xl text-center sm:mt-24">
+    <p class="text-base/8 font-semibold text-primary">404</p>
+    <h1
+      class="mt-4 text-5xl font-semibold tracking-tight text-balance text-on-surface sm:text-6xl"
+    >
+      This page does not exist
+    </h1>
+    <p
+      class="mt-6 text-lg font-medium text-pretty text-on-surface-variant sm:text-xl/8"
+    >
+      Sorry, we couldn’t find the page you’re looking for.
+    </p>
+  </div>
+  <div class="mx-auto px-4 mt-16 flow-root max-w-lg sm:mt-20">
+    <h2 class="sr-only">Popular pages</h2>
+    <ul
+      role="list"
+      class="-mt-6 divide-y divide-outline-variant border-b border-outline-variant"
+    >
+      <li class="relative flex gap-x-6 py-6 group">
+        <div
+          class="flex size-10 flex-none items-center justify-center rounded-lg ring-1 shadow-xs ring-outline-variant"
+        >
+          <BookOpen
+            class="size-6 fill-primary"
+            aria-hidden="true"
+            data-slot="icon"
+          />
+        </div>
+        <div class="flex-auto">
+          <h3 class="text-sm/6 font-semibold text-on-surface">
+            <a href="/docs/platform/overview/quick-start">
+              <span class="absolute inset-0" aria-hidden="true"></span>
+              Documentation
+            </a>
+          </h3>
+          <p class="mt-2 text-sm/6 text-on-surface-variant">
+            Learn how to use our app.
+          </p>
+        </div>
+        <div class="flex-none self-center">
+          <CaretRight
+            class="size-4 fill-on-surface-variant group-hover:fill-on-surface"
+          />
+        </div>
+      </li>
+      <li class="relative flex gap-x-6 py-6 group">
+        <div
+          class="flex size-10 flex-none items-center justify-center rounded-lg ring-1 shadow-xs ring-outline-variant"
+        >
+          <CreditCard
+            class="size-6 fill-primary"
+            aria-hidden="true"
+            data-slot="icon"
+          />
+        </div>
+        <div class="flex-auto">
+          <h3 class="text-sm/6 font-semibold text-on-surface">
+            <a href="/pricing">
+              <span class="absolute inset-0" aria-hidden="true"></span>
+              Pricing
+            </a>
+          </h3>
+          <p class="mt-2 text-sm/6 text-on-surface-variant">
+            Find the right plan for your team.
+          </p>
+        </div>
+        <div class="flex-none self-center">
+          <CaretRight
+            class="size-4 fill-on-surface-variant group-hover:fill-on-surface"
+          />
+        </div>
+      </li>
+    </ul>
+    <div class="mt-10 flex justify-center">
+      <Button plain href="/">
+        <span aria-hidden="true">&larr;</span> Back to home
+      </Button>
+      <!-- <a href="/" class="text-sm/6 font-semibold text-primary"
+        ><span aria-hidden="true">&larr;</span> Back to home</a
+      > -->
+    </div>
+  </div>
+</Layout>

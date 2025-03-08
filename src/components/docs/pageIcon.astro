@@ -1,0 +1,57 @@
+---
+import clsx from "clsx";
+import RocketLaunch from "phosphor-astro/RocketLaunch.astro";
+import HardDrives from "phosphor-astro/HardDrives.astro";
+import Vault from "phosphor-astro/Vault.astro";
+import Blueprint from "phosphor-astro/Blueprint.astro";
+import TreeStructure from "phosphor-astro/TreeStructure.astro";
+import Stack from "phosphor-astro/Stack.astro";
+import HeadCircuit from "phosphor-astro/HeadCircuit.astro";
+import Code from "phosphor-astro/Code.astro";
+import Terminal from "phosphor-astro/Terminal.astro";
+import TerminalWindow from "phosphor-astro/TerminalWindow.astro";
+import GitBranch from "phosphor-astro/GitBranch.astro";
+import Sliders from "phosphor-astro/SlidersHorizontal.astro";
+import BracketsCurly from "phosphor-astro/BracketsCurly.astro";
+import Slack from "phosphor-astro/SlackLogo.astro";
+import Notification from "phosphor-astro/Notification.astro";
+import Download from "phosphor-astro/Download.astro";
+import FileJS from "phosphor-astro/FileJs.astro";
+import FilePY from "phosphor-astro/FilePy.astro";
+
+const repo = {
+    RocketLaunch,
+    HardDrives,
+    Vault,
+    Blueprint,
+    TreeStructure,
+    Stack,
+    HeadCircuit,
+    Code,
+    Terminal,
+    TerminalWindow,
+    Sliders,
+    GitBranch,
+    BracketsCurly,
+    Slack,
+    Notification,
+    Download,
+    FileJS,
+    FilePY,
+} as const;
+
+interface Props {
+    icon: keyof typeof repo;
+    active: boolean;
+}
+
+const { icon, active } = Astro.props;
+
+const Icon = repo[icon];
+---
+
+<Icon
+    class={clsx("size-5", active ? "fill-primary" : "fill-on-surface-variant")}
+    aria-hidden="true"
+    data-slot="icon"
+/>

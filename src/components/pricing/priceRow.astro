@@ -1,0 +1,23 @@
+---
+import PriceCell from "./priceCell.astro";
+interface Props {
+    name: string;
+    freeValue: string | boolean;
+    proValue: string | boolean;
+    enterpriseValue: string | boolean;
+}
+
+const { freeValue, proValue, enterpriseValue, name } = Astro.props;
+---
+
+<tr class="border-b border-outline-variant last:border-none">
+    <th
+        scope="row"
+        class="px-0 py-4 text-sm/6 font-normal text-on-surface-variant"
+    >
+        {name}
+    </th>
+    <PriceCell value={freeValue} plan="Free" />
+    <PriceCell value={proValue} plan="Pro" />
+    <PriceCell value={enterpriseValue} plan="Enterprise" />
+</tr>

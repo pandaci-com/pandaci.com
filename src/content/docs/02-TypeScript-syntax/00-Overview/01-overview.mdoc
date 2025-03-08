@@ -1,0 +1,61 @@
+---
+title: Overview 
+description: Learn how to create TypeScript workflows in Pandaci.
+icon: Code
+---
+
+PandaCI uses Deno to run our TypeScript workflows. You don't need to know anything about Deno to get started.
+
+{% alert level="info" %}
+
+Read our [Quick Start](/docs/platform/overview/quick-start) guide to learn how to create a new project and write your first workflow.
+
+{% /alert %}
+
+## Creating a workflow
+
+To create a workflow, you need to create a file with the `.workflow.ts` extension in the `.pandaci` directory. This file will contain your workflow code.
+
+Here's an example of a simple workflow:
+
+```typescript {% title=".pandaci/hello-world.workflow.ts" %}
+import { docker, $, job, env } from "jsr:@pandaci/workflow";
+
+// Creates a docker task on a 4-core machine
+// same as wrapping with `job("some-name", () => { ... })`
+docker("ubuntu:latest", { name: "hello world" }, () => {
+  // Runs a shell command
+  $`echo "Hello, world! from branch: ${env.PANDACI_BRANCH}"`;
+});
+
+// Creates 2 docker tasks on an 2-core machine
+job("Job 2", { runner: "ubuntu-2x" }, async () => {
+  let files = '';
+  await docker("ubuntu:latest", async () => {
+    // Runs the command in the .pandaci directory
+    // and stores the output as a string
+    files = await $`ls`.cwd(".pandaci").text();
+  });
+  docker("ubuntu:latest", () => {
+    // we can easily share data between tasks or even jobs
+    $`echo "files from another task: ${files}"`;
+  });
+});
+```
+
+We'll treat any files inside the `.pandaci` directory with the `.workflow.ts` extension as a workflow file. You can create as many workflow files as you need.
+
+{% alert level="knowledge" %}
+
+We recommend you keep any related files inside the **.pandaci** directory. This will help you keep your project organized.
+
+{% /alert %}
+
+## Workflow configuration
+
+We allow you to export a configuration object from your workflow file. This lets you configure things like triggers or the name of the workflow.
+
+Learn more about the configuration object in the [Configuration](/docs/typescript-syntax/config/workflow-config) section.
+
+
+

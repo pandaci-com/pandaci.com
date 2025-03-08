@@ -1,0 +1,121 @@
+---
+title: Python project
+description: A basic Python workflow for testing and package management
+icon: FilePY
+---
+
+{% alert level="check" %}
+
+**Prerequisites**
+
+You need an account before starting, create one [here](https://app.pandaci.com/signup).
+
+{% /alert %}
+
+## Basic Python workflow
+
+```typescript {% title=".pandaci/python-ci.workflow.ts" %}
+import { docker, $ } from "jsr:@pandaci/workflow";
+
+docker("python:3.11-slim", async () => {
+  // Install requirements
+  await $`pip install -r requirements.txt`;
+
+  // Run tests
+  await $`python -m pytest`;
+
+  // Run linting
+  await $`flake8 .`;
+});
+```
+
+## Using virtual environments
+
+For more complex projects, you might want to use a virtual environment:
+
+```typescript {% title=".pandaci/python-venv.workflow.ts" %}
+import { docker, $ } from "jsr:@pandaci/workflow";
+
+docker("python:3.11-slim", async () => {
+  // Create and activate virtual environment
+  await $`python -m venv .venv`;
+  await $`source .venv/bin/activate`;
+
+  // Install requirements
+  await $`pip install -r requirements.txt`;
+
+  // Run tests
+  await $`python -m pytest`;
+});
+```
+
+## Using Poetry
+
+If you're using Poetry for dependency management:
+
+```typescript {% title=".pandaci/python-poetry.workflow.ts" %}
+import { docker, $ } from "jsr:@pandaci/workflow";
+
+docker("python:3.11-slim", async () => {
+  // Install Poetry
+  await $`curl -sSL https://install.python-poetry.org | python3 -`;
+  await $`export PATH="/root/.local/bin:$PATH"`;
+
+  // Install dependencies
+  await $`poetry install`;
+
+  // Run tests
+  await $`poetry run pytest`;
+
+  // Run linting
+  await $`poetry run flake8 .`;
+});
+```
+
+## Multiple Python versions
+
+Test your code against multiple Python versions:
+
+```typescript {% title=".pandaci/python-matrix.workflow.ts" %}
+import { docker, $, job } from "jsr:@pandaci/workflow";
+
+// Define Python versions to test against
+const pythonVersions = ["3.8", "3.9", "3.10", "3.11"];
+
+// Create a job for each Python version
+for (const version of pythonVersions) {
+  job(`Python ${version}`, async () => {
+    docker(`python:${version}-slim`, async () => {
+      await $`pip install -r requirements.txt`;
+      await $`python -m pytest`;
+    });
+  });
+}
+```
+
+## Building and Publishing
+
+Build and publish your Python package to PyPI:
+
+```typescript {% title=".pandaci/python-publish.workflow.ts" %}
+import { docker, $, env } from "jsr:@pandaci/workflow";
+
+// Only publish on main branch
+// you could also just use an if statement
+docker.if(env.PANDACI_BRANCH === "main")("python:3.11-slim", async () => {
+  // Install build tools
+  await $`pip install build twine`;
+
+  // Build package
+  await $`python -m build`;
+
+  // Publish to PyPI
+  await $`python -m twine upload dist/* --username __token__ --password ${env.PYPI_TOKEN}`;
+});
+```
+
+{% alert level="knowledge" %}
+
+Learn more about the [workflow syntax](/docs/typescript-syntax/overview/overview).
+
+{% /alert %}

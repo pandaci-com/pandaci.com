@@ -1,0 +1,18 @@
+---
+title: Installing packages
+description: Install jsr, npm or other packages into your workflow
+icon: Download
+---
+
+## Overview
+
+PandaCI workflows use the Deno (v2) runtime. This means you can use both Deno and Node.js packages in your workflows.
+
+The easiest way is to just import the packages in your file. Deno will automatically download and cache the packages for you.
+
+```typescript
+import { WebClient } from "npm:@slack/web-api"; // installs from npm
+import { $ } from "jsr:@pandaci/workflow"; // installs from jsr
+```
+
+You can learn more about the [Deno dependency system](https://docs.deno.com/runtime/fundamentals/modules/).

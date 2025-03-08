@@ -1,0 +1,40 @@
+---
+title: How It Works
+description: Learn how PandaCI's workflows and jobs work together to build and test your code.
+icon: TreeStructure 
+---
+
+## Workflow Runner
+
+The workflow runner is responsible for executing workflows. For each workflow, we provision an isolated VM running our Go agent, which orchestrates execution and manages communication between the workflow and other services.
+
+### Repository Cloning
+
+To ensure your workflow has access to your code, we perform a shallow clone of your repository, retrieving only the latest commit. While you can execute commands directly on the workflow runner, we recommend against this, as our cloning strategy may evolve.
+
+## Job Runner
+
+Jobs provide isolated environments for executing workflow steps. Each job runner is powered by our Go agent, which facilitates communication between the workflow and the job runner.
+
+### Repository Cloning
+
+Similar to workflows, job runners also perform a shallow clone of your repository. This cloned repository is then mounted into any Docker tasks, ensuring all tasks share the same files.
+
+## Tasks
+
+Tasks are collections of commands executed within an environment on the job runner. We currently support two task types:
+
+- **Docker**: Runs commands inside a Docker container.
+- **Native**: Runs commands directly on the job runner.
+
+## Steps
+
+Steps are individual commands executed within a task.
+
+For Docker tasks, each step runs in a new execution context (similar to a fresh terminal session). This means certain data from previous steps may not be accessible. To mitigate this, we recommend either:
+
+- Combining related commands into a single step.
+- Handling data persistence and sharing in TypeScript.
+
+By structuring your workflows efficiently, you can ensure smooth execution and maintainability across your CI/CD pipelines.
+

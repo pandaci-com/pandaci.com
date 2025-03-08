@@ -1,0 +1,126 @@
+---
+import clsx from "clsx";
+import TextAlignLeft from "phosphor-astro/TextAlignLeft.astro";
+
+interface Props {
+  headings: { slug: string; text: string; depth: number }[];
+}
+
+const { headings } = Astro.props;
+---
+
+{
+  headings.length > 0 && (
+    <nav class="hidden md:block sticky w-[17rem] py-6 top-[6.5rem] overflow-y-auto max-h-[calc(100vh-7rem)] scrollbar-thin">
+      <div class="mt-4 pr-4">
+        <h2 class="font-display flex space-x-2 text-sm items-center capitalize font-medium text-on-surface mb-4">
+          <TextAlignLeft class="size-4 fill-current" />
+          <span>On this page</span>
+        </h2>
+        <ul class="" id="contents-sidebar">
+          {headings
+            .filter(({ depth }) => depth <= 4)
+            .map((heading) => (
+              <li>
+                <a
+                  href={`#${heading.slug}`}
+                  data-active={false}
+                  class={clsx(
+                    "block text-on-surface-variant text-sm border-l py-1 border-outline-variant hover:border-outline hover:text-on-surface data-[active='true']:!border-primary data-[active='true']:text-primary transition",
+                    heading.depth === 2 && "pl-4",
+                    heading.depth === 3 && "pl-6",
+                    heading.depth == 4 && "pl-8"
+                  )}
+                >
+                  {heading.text}
+                </a>
+              </li>
+            ))}
+        </ul>
+      </div>
+    </nav>
+  )
+}
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const headers = document.querySelectorAll<HTMLElement>(
+      "article h2, article h3, article h4"
+    );
+    const sidebarLinks = document.querySelectorAll("#contents-sidebar a");
+    const offset = 80;
+
+    const getParentHeaders = (currentHeader: Element) => {
+      const parentHeaders = [];
+      let sibling = currentHeader.previousElementSibling;
+
+      // Traverse previous siblings to find parent headers
+      while (sibling) {
+        if (sibling.tagName.match(/^H[2-4]$/)) {
+          const currentDepth = parseInt(currentHeader.tagName[1]);
+          const siblingDepth = parseInt(sibling.tagName[1]);
+
+          if (siblingDepth < currentDepth) {
+            parentHeaders.push(sibling);
+            currentHeader = sibling; // Move up the hierarchy
+          }
+        }
+        sibling = sibling.previousElementSibling;
+      }
+      return parentHeaders;
+    };
+
+    const findClosestHeader = (): HTMLElement | null => {
+      let closestHeader: HTMLElement | null = null;
+      let closestDistance = Infinity;
+
+      headers.forEach((header) => {
+        const rect = header.getBoundingClientRect();
+        const distance = Math.abs(rect.top - offset);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestHeader = header;
+        }
+      });
+
+      return closestHeader;
+    };
+
+    const highlightSidebar = () => {
+      const closestHeader = findClosestHeader();
+
+      if (closestHeader) {
+        const targetId = closestHeader.id;
+
+        sidebarLinks.forEach((link) =>
+          link.setAttribute("data-active", "false")
+        );
+
+        const currentLink = document.querySelector(
+          `#contents-sidebar a[href="#${targetId}"]`
+        );
+        if (currentLink) {
+          currentLink.setAttribute("data-active", "true");
+
+          // Find and highlight parent headers
+          const parentHeaders = getParentHeaders(closestHeader);
+          parentHeaders.forEach((header) => {
+            const parentLink = document.querySelector(
+              `#contents-sidebar a[href="#${header.id}"]`
+            );
+            if (parentLink) {
+              parentLink.setAttribute("data-active", "true");
+            }
+          });
+        }
+      }
+    };
+
+    // Attach the onscroll handler
+    window.addEventListener("scroll", highlightSidebar);
+
+    // Initial highlighting
+    highlightSidebar();
+  });
+</script>

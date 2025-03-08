@@ -1,0 +1,47 @@
+---
+title: Workflow  config
+description: Workflow config options
+icon: Sliders 
+---
+
+## Overview
+
+You can configure the workflow by exporting a `config` object from your workflow file.
+
+{% alert level="knowledge" %}
+
+**Workflow configs are staticaly parsed** - This means that you can't use variables or functions to define the config.
+
+{% /alert %}
+
+## Example
+
+```typescript {% title=".pandaci/config.workflow.ts" %}
+import { type Config } from "jsr:@pandaci/workflow";
+
+export const config: Config = {
+    name: "My workflow",
+    on: {
+        push: {
+            branches: ["main"]
+        }
+    }
+};
+```
+
+## Config options
+
+### name
+
+- **Type**: `string`
+- **Default**: the name of the workflow file
+
+The name of the workflow.
+
+### on
+
+Learn more about [workflow triggers](/docs/platform/workflows/triggers).
+
+- **Default**: `{ push: { branches: ["*"] } }`
+
+The triggers that start the workflow.

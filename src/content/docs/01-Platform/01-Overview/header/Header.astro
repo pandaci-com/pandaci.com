@@ -1,0 +1,60 @@
+---
+import Indicator from "./Indicator.astro";
+import Mobile from "./Mobile.svelte";
+---
+
+<header
+  class="bg-surface fixed top-0 inset-x-0 z-10 border-b border-outline-variant"
+>
+  <nav
+    class="mx-auto flex max-w-8xl items-center justify-between lg:px-8"
+    aria-label="Global"
+  >
+    <div class="flex items-center gap-x-12 h-14">
+      <a href="/" class="px-5 relative h-full flex items-center justify-center">
+        <Indicator href={"/"} />
+        <span class="sr-only">Panda CI</span>
+        <h1 class="text-2xl/8 relative font-semibold text-on-surface">
+          Panda CI
+        </h1>
+      </a>
+      <div class="hidden lg:flex lg:gap-x-2 h-14">
+        {
+          [
+            {
+              name: "Docs",
+              href: "/docs/platform/overview/quick-start",
+              start: "/docs",
+            },
+            { name: "Pricing", href: "/pricing", start: "/pricing" },
+          ].map((item) => (
+            <a
+              href={item.href}
+              class="text-sm/6 h-full px-6 flex items-center justify-center font-semibold text-on-surface relative"
+            >
+              <Indicator href={item.start} />
+              <span class="relative">{item.name}</span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="px-4 flex space-x-4">
+      <a
+        href="https://app.pandaci.com/login"
+        class="rounded-md bg-surface px-2.5 py-1.5 text-sm font-semibold hover:ring-surface-high hover:bg-surface-high transition text-on-surface ring-1 shadow-xs ring-outline ring-inset"
+      >
+        Sign in
+      </a>
+      <a
+        href="https://app.pandaci.com/signup"
+        class="rounded-md bg-surface-inverse hover:bg-surface-inverse/80 px-2.5 py-1.5 text-sm font-semibold transition text-on-surface-inverse
+         shadow-xs"
+      >
+        Get started
+      </a>
+      <Mobile client:load />
+    </div>
+  </nav>
+</header>

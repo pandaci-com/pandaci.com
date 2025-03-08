@@ -1,0 +1,39 @@
+---
+title: Sending notifications
+description: Send notifications from your workflows
+icon: Notification
+---
+
+{% alert level="knowledge" %}
+
+Whilst we don't have any built-in notification support, it's incredibly easy to send notifications from your workflows.
+
+{% /alert %}
+
+## Slack
+
+To send a message to a Slack channel, we recommend using the slack npm package. See our [example workflow](/docs/typescript-syntax/examples/slack) for more information.
+
+## Webhooks
+
+Since webhooks are just HTTP requests, you can use the fetch API to send a request to a webhook URL.
+
+```typescript
+fetch("https://webhook.site/your-unique-id", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        message: "Hello, world!"
+    })
+});
+```
+
+Depending on your destination, there may be an offical npm package to help you send the request.
+
+## Email
+
+To send an email, you can use the [nodemailer](https://www.npmjs.com/package/nodemailer) package.
+
+[Learn how to install packages](/docs/typescript-syntax/guides/installing-packages).

@@ -1,0 +1,15 @@
+---
+import clsx from "clsx";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class={clsx("relative", className)}>
+  <div class="relative flex h-full flex-col overflow-hidden">
+    <slot />
+  </div>
+</div>

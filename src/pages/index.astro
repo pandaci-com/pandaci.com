@@ -1,0 +1,253 @@
+---
+import Examples from "../components/hero/examples.astro";
+import Layout from "../layouts/Layout.astro";
+import Flow from "../components/flow/flow.svelte";
+import Bento from "../components/bento/Bento.astro";
+import Workflow from "../components/Workflow.svelte";
+import { Image } from "astro:assets";
+import ExampleRunImg from "../assets/example-run.png";
+import Button from "../components/Button.astro";
+import GithubLogo from "phosphor-astro/GithubLogo.astro";
+import Vault from "phosphor-astro/Vault.astro";
+import Lightning from "phosphor-astro/Lightning.astro";
+import GitBranch from "phosphor-astro/GitBranch.astro";
+import Cloud from "phosphor-astro/Cloud.astro";
+import Notebook from "phosphor-astro/Notebook.astro";
+---
+
+<Layout
+    title="CI/CD pipelines with TypeScript"
+    description="PandaCI is a modern CI/CD platform with a simple but extremely powerful styntax learnable in minutes."
+>
+    <div class="relative isolate border-b border-outline">
+        <div class="relative isolate overflow-hidden">
+            <div class="py-16 lg:pb-24 max-w-7xl mx-auto relative">
+                <div class="mx-auto max-w-7xl px-6 lg:px-8">
+                    <div class="text-center">
+                        <p
+                            class="text-center sm:text-base/7 text-sm/7 font-semibold text-primary"
+                        >
+                            No YAML required!
+                        </p>
+                        <h1
+                            class="text-balance font-semibold tracking-tight text-on-surface lg:text-7xl md:text-6xl text-5xl"
+                        >
+                            Code your <span class="whitespace-nowrap">
+                                CI/CD
+                            </span> pipelines with <span>TypeScript</span>
+                        </h1>
+                        <p
+                            class="mt-8 text-pretty text-lg font-medium text-on-surface-variant sm:text-xl/8 lg:max-w-3xl text-center mx-auto"
+                        >
+                            PandaCI is a modern CI/CD platform with a simple but
+                            extremely powerful styntax learnable in minutes.
+                            Avoid hours of documentation and just use a language
+                            your team already knows.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <Examples />
+
+        <div
+            class="absolute inset-0 -z-10 h-full w-full items-center px-5 dark:[background:radial-gradient(125%_200%_at_50%_10%,_rgb(24,24,27)_40%,_oklch(41.47%_0.1455_290.48)_75%)] [background:radial-gradient(125%_200%_at_50%_10%,_#f4f4f5_40%,_rgb(157,123,255)_75%)]"
+        >
+        </div>
+    </div>
+
+    <!-- Bento -->
+
+    <Bento />
+
+    <div class="mx-auto max-w-7xl border-x border-outline-variant">
+        <div class="relative z-0 overflow-hidden pt-12 pb-18">
+            <div class="diagonal-pattern opacity-50 absolute inset-0 -z-10">
+            </div>
+            <h2 class="text-center px-8 text-base/7 font-semibold text-primary">
+                Diagnose and fix issues
+            </h2>
+            <p
+                class="mt-2 mx-auto max-w-2xl px-8 text-center text-4xl font-semibold tracking-tight text-balance text-on-surface sm:text-5xl"
+            >
+                Get insights into your pipeline and fix issues faster
+            </p>
+        </div>
+        <div class="border-outline-variant pb-24 sm:pb-32">
+            <div class="border-y border-outline-variant py-24 px-4">
+                <Workflow client:load />
+            </div>
+        </div>
+    </div>
+
+    <!-- Screenshot  -->
+    <div class="bg-surface border-t border-outline-variant">
+        <div
+            class="relative z-0 overflow-hidden pt-12 pb-18 max-w-7xl mx-auto border-x border-outline-variant"
+        >
+            <div class="diagonal-pattern opacity-50 absolute inset-0 -z-10">
+            </div>
+            <h2 class="text-center px-8 text-base/7 font-semibold text-primary">
+                Cloud-native platform
+            </h2>
+            <p
+                class="mt-2 text-center mx-auto max-w-2xl px-8 text-4xl font-semibold tracking-tight text-balance text-on-surface sm:text-5xl"
+            >
+                Gone are the days of provisioning CI/CD servers
+            </p>
+        </div>
+        <div
+            class="relative overflow-hidden pt-16 border-x border-t border-outline-variant max-w-7xl mx-auto"
+        >
+            <div class="mx-auto px-6 lg:px-8">
+                <Image
+                    src={ExampleRunImg}
+                    alt="Example run"
+                    class="mb-[-12%] rounded-xl"
+                />
+                <div class="relative" aria-hidden="true">
+                    <div
+                        class="absolute inset-x-0 bottom-0 bg-linear-to-t from-surface pt-[7%]"
+                    >
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div
+            class="mx-auto pt-16 max-w-7xl pb-24 sm:pb-32 px-6 sm:pt-20 md:pt-24 lg:px-8 border-x border-outline-variant"
+        >
+            <dl
+                class="mx-auto grid max-w-2xl grid-cols-1 gap-x-6 gap-y-10 text-base/7 text-on-surface-variant sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-x-8 lg:gap-y-16"
+            >
+                <div class="relative pl-9">
+                    <dt class="inline font-semibold text-on-surface">
+                        <GithubLogo
+                            data-slot="icon"
+                            class="absolute top-1 left-1 size-5 fill-primary"
+                        />
+                        First-class Github integration.
+                    </dt>
+                    <dd class="inline">
+                        With no additional setup, PandaCI integrates seamlessly
+                        with your Github repositories. We'll automatically
+                        report workflow status to your PRs.
+                    </dd>
+                </div>
+                <div class="relative pl-9">
+                    <dt class="inline font-semibold text-on-surface">
+                        <Vault
+                            data-slot="icon"
+                            class="absolute top-1 left-1 size-5 fill-primary"
+                        />
+
+                        Secure secrets.
+                    </dt>
+
+                    <dd class="inline">
+                        PandaCI provides a secure way to store and use secrets
+                        in your pipelines. We encrypt your secrets and only
+                        expose them to your running jobs.
+                    </dd>
+                </div>
+                <div class="relative pl-9">
+                    <dt class="inline font-semibold text-on-surface">
+                        <Lightning
+                            data-slot="icon"
+                            class="absolute top-1 left-1 size-5 fill-primary"
+                        />
+                        Fast and reliable.
+                    </dt>
+                    <dd class="inline">
+                        PandaCI is built on top of the latest cloud-native
+                        technologies. We provide a fast and reliable platform
+                        for your CI/CD needs.
+                    </dd>
+                </div>
+                <div class="relative pl-9">
+                    <dt class="inline font-semibold text-on-surface">
+                        <GitBranch
+                            data-slot="icon"
+                            class="absolute top-1 left-1 size-5 fill-primary"
+                        />
+                        Protect production secrets.
+                    </dt>
+                    <dd class="inline">
+                        We provide the ability to limit secrets to sepecific
+                        branches. This ensures that your production secrets are
+                        never exposed to your development environments.
+                    </dd>
+                </div>
+                <div class="relative pl-9">
+                    <dt class="inline font-semibold text-on-surface">
+                        <Cloud
+                            data-slot="icon"
+                            class="absolute top-1 left-1 size-5 fill-primary"
+                        />
+                        Scalable infrastructure.
+                    </dt>
+                    <dd class="inline">
+                        With our cloud-native platform, you don't have to worry
+                        about provisioning servers. We scale with your needs.
+                    </dd>
+                </div>
+                <div class="relative pl-9">
+                    <dt class="inline font-semibold text-on-surface">
+                        <Notebook
+                            data-slot="icon"
+                            class="absolute top-1 left-1 size-5 fill-primary"
+                        />
+                        Real-time logs.
+                    </dt>
+                    <dd class="inline">
+                        Get real-time logs for your running jobs. We provide
+                        detailed logs for each step in your pipeline.
+                    </dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+
+    <!-- CTA  -->
+    <div
+        class="bg-surface relative isolate overflow-hidden border-t border-outline-variant"
+    >
+        <div class="px-6 py-24 sm:px-6 sm:py-32 lg:px-8">
+            <div class="mx-auto max-w-2xl text-center">
+                <h2
+                    class="text-4xl font-semibold tracking-tight text-balance text-on-surface sm:text-5xl"
+                >
+                    Get started for free
+                </h2>
+                <p
+                    class="mx-auto mt-6 max-w-xl text-lg/8 text-pretty text-on-surface-variant"
+                >
+                    Follow our <a
+                        class="text-on-surface underline"
+                        href="/docs/platform/overview/quick-start"
+                    >
+                        quick start guide
+                    </a> to create your first pipeline in minutes.
+                </p>
+                <div class="mt-10 flex items-center justify-center gap-x-6">
+                    <Button color="green" href="https://app.pandaci.com/signup">
+                        Get started
+                    </Button>
+                    <Button plain href="/pricing">
+                        See pricing <span aria-hidden="true">→</span>
+                    </Button>
+                </div>
+            </div>
+            <div class="absolute top-0 -z-10 h-full w-full">
+                <div
+                    class="absolute right-auto top-auto left-0 bottom-0 h-[500px] w-[500px] -translate-x-[30%] -translate-y-[20%] rounded-full bg-[rgba(173,109,244,0.5)] dark:bg-[oklch(0.4147_0.1455_290.48_/_25%)] opacity-50 blur-[80px]"
+                >
+                </div>
+                <div
+                    class="absolute bottom-auto left-auto right-0 top-0 h-[500px] w-[500px] -translate-x-[30%] translate-y-[20%] rounded-full bg-[rgba(173,109,244,0.5)] dark:bg-[oklch(0.4147_0.1455_290.48_/_25%)] opacity-50 blur-[80px]"
+                >
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout>

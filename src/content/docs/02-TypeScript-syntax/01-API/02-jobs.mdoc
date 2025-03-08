@@ -1,0 +1,167 @@
+---
+title: Jobs
+description: Jobs are isolated machines that run your tasks
+icon: HardDrives
+---
+
+Jobs wrap your tasks, providing a runner and a context for your tasks to run in.
+
+{% alert level="knowledge" %}
+
+**Using tasks directly** - You can run tasks without wrapping with a job.
+A default job with the **"ubuntu-4x"** runner is created for you.
+
+{% /alert %}
+
+## Example
+
+```typescript {% title=".pandaci/example.workflow.ts" %}
+import { job } from "jsr:@pandaci/workflow"
+
+// Simple job
+await job("A very cool job", () => {
+  // ...
+})
+
+
+// Job with a custom runner
+await job("A very cool job", { runner: "ubuntu-8x" }, () => {
+  // ...
+})
+```
+
+
+## Methods
+
+### job.if
+
+The `if` method allows you to skip a job based on a condition.
+
+```typescript
+job.if(env.PANDACI_BRANCH === "main")("Skip this job", () => {
+  // ...
+})
+```
+
+### job.nothrow
+
+The `nothrow` method allows you to suppress errors if the condition is met.
+
+```typescript
+job.nothrow("Skip this job", () => {
+  // ...
+})
+```
+
+### job.skip
+
+The `skip` method allows you to skip a job if the condition is met.
+
+```typescript
+job.skip("Skip this job", () => {
+  // ...
+})
+```
+
+
+## Job options
+
+- **runner** - The runner to use for this job. Defaults to **"ubuntu-4x"**.
+- **skip** - Skip this job if the condition is met. Defaults to **false**.
+- **throws** - Throw an error if the condition is met. Defaults to **true**.
+
+## Return value
+
+### JobPromise
+
+The promise returned when a job is awaited. It's an extension of `Promise<JobResult>`.
+
+### JobResult
+
+The result of a job. This is whats returned when a job is awaited.
+
+
+{% table %}
+* Property
+* Type
+* Description
+---
+* name
+* `string`
+* The name of the job.
+---
+* conclusion
+* `Conclusion` ('success' | 'failure' | 'skipped')
+* The conclusion of the job.
+---
+* isFailure
+* `boolean`
+* True if the job failed.
+---
+* isSuccess
+* `boolean`
+* True if the job succeeded.
+---
+* isSkipped
+* `boolean`
+* True if the job was skipped.
+---
+* id
+* `string`
+* The id of the job.
+---
+* runner
+* `string`
+* The runner used for the job.
+{% /table %}
+
+### JobError
+
+Thrown when a job fails.
+
+
+{% table %}
+* Property
+* Type
+* Description
+---
+* conclusion
+* `Conclusion` ('success' | 'failure' | 'skipped')
+* The conclusion of the job.
+---
+* isFailure
+* `boolean`
+* True if the job failed.
+---
+* isSuccess
+* `boolean`
+* True if the job succeeded.
+---
+* isSkipped
+* `boolean`
+* True if the job was skipped.
+---
+* id
+* `string`
+* The id of the job.
+---
+* runner
+* `string`
+* The runner used for the job.
+---
+* jobName
+* `string`
+* The name of the job.
+{% /table %}
+
+#### Usage
+
+```typescript
+import { job, type JobError } from "jsr:@pandaci/workflow"
+
+job("A job", () => {
+ // A failing task
+}).catch((error: JobError) => {
+  console.log(error.jobName)
+})
+```

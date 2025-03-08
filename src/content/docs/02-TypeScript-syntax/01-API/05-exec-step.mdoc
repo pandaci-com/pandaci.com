@@ -1,0 +1,141 @@
+---
+title: Exec Step
+description: Execute a command in the current task.
+icon: Terminal
+---
+
+## Overview
+
+Exec steps must be wrapped in a [task](/docs/typescript-syntax/api/docker-tasks). They return a promise that resolves when the command is complete.
+
+## Example
+
+```typescript {% title=".pandaci/exec-step.workflow.ts" %}
+import { docker, $ } from "jsr:@pandaci/workflow";
+
+docker("ubuntu:latest", () => {
+  $`echo "Hello, world!"`;
+
+  const output = $`ls`.text();
+});
+```
+
+## Piping
+
+You can pipe the output of one command to another by using template literals.
+
+```typescript {% title=".pandaci/exec-step-pipe.workflow.ts" %}
+import { docker, $ } from "jsr:@pandaci/workflow";
+
+docker("ubuntu:latest", () => {
+    const output = $`ls | grep "file"`;
+    $`echo ${output} > files.txt`;
+});
+```
+
+We automatically escape the output of the command to prevent command injection.
+
+## Global Exec
+
+You can create a "global" exec by calling the `$` function without a string.
+
+```typescript
+const buildExec = $.cwd("./build");
+buildExec`ls`;
+
+const testExec = $({ cwd: "./test" });
+testExec`ls`;
+```
+
+
+## Methods
+
+### exec.cwd
+
+The `cwd` method allows you to change the current working directory for the command.
+
+```typescript
+$`ls`.cwd("/home/pandaci");
+```
+
+### nothrow
+
+The `nothrow` method allows you to ignore errors from the command.
+
+```typescript
+$`ls`.nothrow();
+```
+
+### throws
+
+The `throws` method allows you to throw an error if the command fails.
+
+```typescript
+$`ls`.throws(true);
+```
+
+### env
+
+The `env` method allows you to set environment variables for the command.
+
+```typescript
+$`echo $MY_ENV_VAR`.env({ MY_ENV_VAR: "Hello, world!" });
+```
+
+## Returns
+
+The promise returned by the exec step resolves with the output of the command as an object with the following properties:
+
+### stdout
+
+- Type: **Uint8Array**
+
+The standard output of the command.
+
+### stderr
+
+- Type: **Uint8Array**
+
+The standard error of the command.
+
+### stdall
+
+- Type: **Uint8Array**
+
+The combined standard output and standard error of the command.
+
+### exitCode
+
+- Type: **number**
+
+The exit code of the command.
+
+### text
+
+- Type: **(encoding?: string = "utf-8") => string**
+
+A method that returns the output as a string.
+
+### json
+
+- Type: **<T>() => T**
+
+A method that returns the output as a JSON object.
+
+### lines
+
+- Type: **(encoding?: string = "utf-8") => string[]**
+
+A method that returns the output as an array of lines.
+
+## Options
+
+You can use also use an object to pass options to the exec step.
+
+```typescript
+$({ cwd: "/home/pandaci", throws: false })`ls`;
+```
+
+- **cwd** - The current working directory for the command.
+- **throws** - Throw an error if the command fails. Defaults to **true**.
+- **nothrow** - Ignore errors from the command. Defaults to **false**.

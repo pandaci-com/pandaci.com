@@ -1,0 +1,191 @@
+---
+title: Node project
+description: A comprehensive guide to setting up CI/CD workflows for Node.js applications in PandaCI.
+icon: FileJS
+---
+
+{% alert level="check" %}
+
+**Prerequisites**
+
+You need an account before starting, create one [here](https://app.pandaci.com/signup).
+
+{% /alert %}
+
+## Basic Node.js workflow
+
+This simple workflow installs dependencies and runs tests and linting commands:
+
+```typescript {% title=".pandaci/ci.workflow.ts" %}
+import { docker, $ } from "jsr:@pandaci/workflow";
+
+docker("node:20", async () => {
+  // Install dependencies
+  await $`npm ci`;
+
+  // Run tests and linting in parallel
+  await Promise.all([
+    $`npm run test`,
+    $`npm run lint`
+  ]);
+});
+```
+
+## Advanced Node.js workflow
+
+This more advanced workflow uses caching, separate jobs, and only deploys on the main branch:
+
+```typescript {% title=".pandaci/advanced-ci.workflow.ts" %}
+import { docker, $, job, env, volume } from "jsr:@pandaci/workflow";
+import { type Config } from "jsr:@pandaci/workflow";
+
+// Configure workflow triggers
+export const config: Config = {
+  name: "Node.js CI Pipeline",
+  on: {
+    push: {
+      branches: ["main", "develop", "feature/*"]
+    },
+    pr: {
+      events: ["opened", "synchronize", "reopened"],
+      targetBranches: ["main", "develop"]
+    }
+  }
+};
+
+
+await docker("node:20", async () => {
+  // Install dependencies
+  await $`npm ci`;
+
+  // Run tests and linting in parallel
+  await Promise.all([
+    $`npm run test`,
+    $`npm run lint`
+  ]);
+});
+
+// Build & Deploy - only runs on main branch
+job.if(env.PANDACI_BRANCH === "main")("Deploy", () => {
+  docker("node:20", async () => {
+    await $`npm ci`;
+    await $`npm run build`;
+
+    // Your deployment command here
+    // For example: $`npx firebase deploy --token ${env.FIREBASE_TOKEN}`;
+  });
+});
+```
+
+## Package Manager Options
+
+### Using npm
+
+```typescript {% title=".pandaci/npm-ci.workflow.ts" %}
+import { docker, $ } from "jsr:@pandaci/workflow";
+
+docker("node:20", async () => {
+  // Use npm ci for clean installs in CI environments
+  await $`npm ci`;
+
+  // Run your project commands
+  await $`npm test`;
+  await $`npm run build`;
+});
+```
+
+### Using PNPM
+
+```typescript {% title=".pandaci/pnpm-ci.workflow.ts" %}
+import { docker, $ } from "jsr:@pandaci/workflow";
+
+// Helper function to set up PNPM
+export async function setupPnpm() {
+  await $`PNPM_HOME="/pnpm"`;
+  await $`PATH="$PNPM_HOME:$PATH"`;
+  // Enable corepack (included with modern Node.js)
+  await $`corepack enable`;
+  await $`pnpm i`;
+}
+
+docker("node:20", async () => {
+  await setupPnpm();
+
+  // Run your project commands
+  await $`pnpm test`;
+  await $`pnpm build`;
+});
+```
+
+### Using Yarn
+
+```typescript {% title=".pandaci/yarn-ci.workflow.ts" %}
+import { docker, $ } from "jsr:@pandaci/workflow";
+
+// Helper function to set up Yarn
+export async function setupYarn() {
+  // Enable corepack (included with modern Node.js)
+  await $`corepack enable`;
+
+  // Install dependencies with frozen lockfile
+  await $`yarn install --frozen-lockfile`;
+}
+
+docker("node:20", async () => {
+  await setupYarn();
+
+  // Run your project commands
+  await $`yarn test`;
+  await $`yarn build`;
+});
+```
+
+## Testing with multiple Node.js versions
+
+Test your application across different Node.js versions:
+
+```typescript {% title=".pandaci/node-matrix.workflow.ts" %}
+import { docker, $, job } from "jsr:@pandaci/workflow";
+
+// Define Node.js versions to test against
+const nodeVersions = ["16", "18", "20"];
+
+// Run tests for each Node.js version
+for (const version of nodeVersions) {
+  job(`Node ${version}`, () => {
+    docker(`node:${version}`, async () => {
+      await $`npm ci`;
+      await $`npm test`;
+    });
+  });
+}
+```
+
+## Including code coverage reports
+
+Generate and analyze code coverage reports:
+
+```typescript {% title=".pandaci/code-coverage.workflow.ts" %}
+import { docker, $ } from "jsr:@pandaci/workflow";
+
+docker("node:20", async () => {
+  await $`npm ci`;
+
+  // Run tests with coverage
+  await $`npm run test:coverage`;
+
+  // Optional: Check coverage thresholds
+  await $`npx nyc check-coverage --lines 80 --functions 80 --branches 70`;
+
+  // Optional: Upload coverage report to a service like Codecov
+  if (env.CODECOV_TOKEN) {
+    await $`npx codecov --token=${env.CODECOV_TOKEN}`;
+  }
+});
+```
+
+{% alert level="knowledge" %}
+
+Learn more about the [workflow syntax](/docs/typescript-syntax/overview/overview).
+
+{% /alert %}

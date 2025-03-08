@@ -1,0 +1,32 @@
+---
+title: Editor setup 
+description: Setup local development environment for TypeScript workflows in Pandaci. 
+icon: BracketsCurly 
+---
+
+
+## Installing Deno
+
+We recommend installing the Deno CLI and related tools for local development.
+
+Follow the instructions in the [Deno installation guide](https://docs.deno.com/runtime/getting_started/installation) to install Deno on your machine.
+
+## Editor setup
+
+Deno have great docs covering a range of editors and IDEs, you can find them [here](https://docs.deno.com/runtime/getting_started/installation/).
+
+## Only enable Deno for PandaCI files
+
+If you aren't in a Deno only project, there's a good chance you'll have conflicts with other TypeScript projects. To avoid this, you can enable Deno only for PandaCI files.
+
+The changes you need to make will depend on your editor. Here's an example for VS Code:
+
+```json {% title=".vscode/settings.json" %}
+{
+  "deno.enablePaths": [".pandaci"]
+}
+```
+
+This will enable Deno only for files in the `.pandaci` directory.
+
+

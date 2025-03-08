@@ -1,0 +1,25 @@
+---
+title: Workflow Environment
+description: These are the variables accessible to your workflows and jobs.
+icon: Stack
+---
+
+## Workflow Environment
+
+We prefix our platforms environment variables with `PANDACI_` to avoid conflicts with your existing environment variables.
+
+{% alert level="knowledge" %}
+Any secrets you create are also available as environment variables.
+
+These aren't prefixed.
+{% /alert %}
+
+
+- **PANDACI_BRANCH**: The branch name of the current workflow.
+- **PANDACI_COMMIT_SHA**: The commit hash of the current workflow.
+- **PANDACI_WORKFLOW_ID**: The unique ID of the current workflow.
+- **PANDACI_REPO_URL**: The URL of the repository.
+
+{% alert level="info" %}
+
+Please create an [issue](https://github.com/pandaci-com/pandaci/issues) if you need additional environment variables.

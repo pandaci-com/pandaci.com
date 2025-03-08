@@ -1,0 +1,164 @@
+---
+import { Code } from "astro:components";
+import Box from "./Box.astro";
+import Fence from "../docs/markdoc/Fence.astro";
+import DashImg from "./dash.png";
+import { Image } from "astro:assets";
+
+const code = `import { docker, $ } from 'jsr:@pandaci/core'
+
+// Test and build our web app
+await docker('node:22', async () => {
+    await $\`npm install\`
+    await $\`npm run test\`
+    await $\`npm run build\`
+})
+
+// Deploy to S3
+await docker('amazon/aws-cli', () => {
+    $\`aws s3 cp ./build s3://prod --recursive\`
+})
+`;
+---
+
+<div class="bg-surface z-10 px-6 lg:px-8 border-outline-variant mt-24 border-y">
+  <div
+    class="mx-auto max-w-2xl pb-24 sm:pb-32 lg:max-w-7xl border-x border-outline-variant"
+  >
+    <div class="relative z-0 overflow-hidden pt-12 pb-18 n">
+      <div class="diagonal-pattern opacity-50 absolute inset-0 -z-10"></div>
+      <h2 class="text-center px-8 text-base/7 font-semibold text-primary">
+        Modern and powerful
+      </h2>
+      <p
+        class="mt-2 max-w-2xl px-8 text-center mx-auto text-4xl font-semibold tracking-tight text-balance text-on-surface sm:text-5xl"
+      >
+        Ship any app, from hobby to enterprise, faster
+      </p>
+    </div>
+
+    <!-- GRID  -->
+
+    <div
+      class="grid gap-4 lg:grid-cols-3 lg:grid-rows-2 border-y border-outline-variant"
+    >
+      <Box class="lg:row-span-2 lg:border-r border-outline-variant">
+        <div class="px-8 pt-8 pb-3 sm:px-10 sm:pt-10 sm:pb-0">
+          <p
+            class="mt-2 text-lg font-medium tracking-tight text-on-surface max-lg:text-center"
+          >
+            No nonsense dashboard
+          </p>
+          <p
+            class="mt-2 max-w-lg text-sm/6 text-on-surface-variant max-lg:text-center"
+          >
+            Clear logs, intuitive workflows, and real-time updates; our
+            interface is built to make CI/CD smooth and frustration-free.
+          </p>
+        </div>
+        <div
+          class="@container relative min-h-[30rem] w-full grow max-lg:mx-auto lg:max-lg:max-w-sm"
+        >
+          <div
+            class="absolute left-0 right-10 top-10 bottom-0 overflow-hidden rounded-tr-2xl border-r border-t border-outline-variant"
+          >
+            <Image
+              src={DashImg}
+              widths={[400, 630, DashImg.width]}
+              sizes={`(max-width: 1023px) 630px, 400px`}
+              alt="Dashboard screenshot"
+              class="size-full object-cover object-left"
+            />
+          </div>
+        </div>
+      </Box>
+      <Box
+        class="max-lg:row-start-1 border-b lg:border-x border-outline-variant"
+      >
+        <div class="px-8 py-8 sm:px-10 sm:pt-10">
+          <p
+            class="mt-2 text-lg font-medium tracking-tight text-on-surface max-lg:text-center"
+          >
+            Fair & Transparent Pricing
+          </p>
+          <p
+            class="mt-2 max-w-lg text-sm/6 text-on-surface-variant max-lg:text-center"
+          >
+            Despite offering powerful runners, our pricing is fair, transparent
+            and can save you money when compared to other CI/CD services.
+          </p>
+        </div>
+      </Box>
+      <Box
+        class="max-lg:row-start-3 lg:col-start-2 lg:row-start-2 border-outline-variant lg:border-b-0 border-y lg:border-x"
+      >
+        <div class="px-8 py-8 sm:px-10 sm:pt-10">
+          <p
+            class="mt-2 text-lg font-medium tracking-tight text-on-surface max-lg:text-center"
+          >
+            High performance runners
+          </p>
+          <p
+            class="mt-2 max-w-lg text-sm/6 text-on-surface-variant max-lg:text-center"
+          >
+            We use fly.io performance runners to ensure your tests run as fast
+            as possible. Our default runners have 4 cores and 16GB of RAM!
+          </p>
+        </div>
+      </Box>
+      <Box class="lg:row-span-2 lg:border-l border-outline-variant">
+        <div class="relative flex h-full flex-col overflow-hidden">
+          <div class="px-8 pt-8 pb-3 sm:px-10 sm:pt-10 sm:pb-0">
+            <p
+              class="mt-2 text-lg font-medium tracking-tight text-on-surface max-lg:text-center"
+            >
+              Powerful, Intuitive Syntax
+            </p>
+            <p
+              class="mt-2 max-w-lg text-sm/6 text-on-surface-variant max-lg:text-center"
+            >
+              Ditch YAML. Write workflows in TypeScript, reuse code, and build
+              complex pipelines with simple, readable logic.
+            </p>
+          </div>
+          <div class="relative min-h-[30rem] w-full grow">
+            <div
+              class="absolute top-10 right-0 bottom-0 left-10 overflow-hidden border-l border-t border-outline-variant rounded-tl-xl bg-surface-low shadow-2xl"
+            >
+              <div class="flex bg-surface/40 ring-1 ring-outline-variant">
+                <div
+                  class="-mb-px flex text-sm/6 font-medium text-on-surface-variant"
+                >
+                  <div
+                    class="border-r border-b border-r-outline-variant border-b-outline-variant bg-surface px-4 py-2 text-on-surface"
+                  >
+                    ci.pandaci.ts
+                  </div>
+                  <div class="border-r border-outline-variant px-4 py-2">
+                    cleanup.pandaci.ts
+                  </div>
+                </div>
+              </div>
+              <div class="px-6 pt-6 pb-14">
+                <Fence inline code={code} lang="typescript" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </Box>
+    </div>
+
+    <style is:global>
+      .diagonal-pattern {
+        background: repeating-linear-gradient(
+          45deg,
+          var(--color-surface),
+          var(--color-surface) 20px,
+          var(--color-outline-variant) 10px,
+          var(--color-outline-variant) 21px
+        );
+        backdrop-filter: blur(10px);
+      }
+    </style>
+  </div>
+</div>

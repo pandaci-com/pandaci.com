@@ -1,0 +1,118 @@
+---
+import Tabs from "./tabs.svelte";
+import { codeToHtml } from "shiki";
+
+const data = [
+  {
+    value: "simple",
+    label: "Simple syntax",
+    description:
+      "Inspired by testing frameworks, you can learn our syntax in minutes.",
+    content: `import { docker, $ } from "jsr:@pandaci/workflow"
+
+// Starts a docker job with node:22 image
+docker("node:22", () => {
+  // Runs inside the docker container
+  await $\`npm install\`
+  await $\`npm run test\`
+  await $\`npm run build\`
+})`,
+  },
+  {
+    value: "reuse",
+    label: "Reuse code",
+    description:
+      "It's just TypeScript, define your functions as usual in the same file or via import/export.",
+    content: `import { job, $ } from "jsr:@pandaci/workflow"
+
+async function init() {
+  // ...
+}
+
+// Starts a cloud runner
+job("ubuntu", () => {
+  await init()
+  // ...
+})`,
+  },
+  {
+    value: "performance",
+    label: "Large runners",
+    description:
+      "Our cloud runners can have up to 16 cores, perfect for large builds. GPU runners are coming soon.",
+    content: `import { job } from "jsr:@pandaci/workflow"
+
+// 8 core cloud runner
+job("ubuntu-8x", () => {
+  // ...
+})
+
+// 16 core cloud runner
+job("ubuntu-16x", () => {
+  // ...
+})`,
+  },
+  {
+    value: "conditional",
+    label: "Conditional steps",
+    description:
+      "Since it's TypeScript, you can use if statements. No more weird yaml syntax.",
+    content: `import { docker, $, env } from "jsr:@pandaci/workflow"
+
+docker("node:22", () => {
+  if (env.branch === "main") {
+    await $\`npm run deploy\`
+  }
+})`,
+  },
+  {
+    value: "matrix",
+    label: "Matrix jobs",
+    description: "Easily spin up multiple jobs with different configurations.",
+    content: `import { docker } from "jsr:@pandaci/workflow"
+
+[18, 20, 22].forEach((version) => 
+  docker(\`node:\${version}\`, () => {
+    // ...
+  })
+)`,
+  },
+  {
+    value: "parallel",
+    label: "Parallel steps",
+    description:
+      "Our syntax uses async/await, so you can easily run jobs, tasks or commands in parallel.",
+    content: `import { docker, $ } from "jsr:@pandaci/workflow"
+
+// You can also run jobs in parallel
+
+docker("node:22", () => {
+  await Promise.all([
+    $\`npm run test\`,
+    $\`npm run build\`,
+  ])
+})`,
+  },
+];
+
+const withCode = await Promise.all(
+  data.map(async (item) => ({
+    ...item,
+    content: await codeToHtml(item.content, {
+      lang: "typescript",
+      themes: {
+        light: "github-light",
+        dark: "slack-dark",
+      },
+      colorReplacements: {
+        "#222222": "var(--color-surface)",
+        "#fff": "var(--color-surface)",
+      },
+    }),
+  }))
+);
+---
+
+<div class="mx-auto h-[24rem]">
+  <Tabs data={withCode} client:load />
+</div>

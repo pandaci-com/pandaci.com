@@ -1,0 +1,127 @@
+---
+import clsx from "clsx";
+import MobileHeader from "./mobileHeader.svelte";
+import NavItems from "./navItems.astro";
+import MobileGroupSelect from "./mobileGroupSelect.svelte";
+import "./search.css";
+import AppWindow from "phosphor-astro/AppWindow.astro";
+import TypeScriptFile from "phosphor-astro/Code.astro";
+
+export interface Props {
+  groups: { group: string; label: string; href: string }[];
+  currentID: string;
+  currentGroup: string;
+}
+
+const { groups, currentID, currentGroup } = Astro.props;
+---
+
+<div
+  class="h-12 border-b border-outline-variant fixed top-14 mt-px inset-x-0 bg-surface/50 backdrop-blur-lg z-20 flex space-x-4"
+>
+  <div class="max-w-7xl mx-auto flex space-x-4 w-full">
+    <!-- Desktop  -->
+    <nav class="grow md:flex hidden items-center">
+      <ul class="flex items-center">
+        {
+          groups.map((item) => (
+            <li class="relative">
+              <a
+                href={item.href}
+                class={clsx(
+                  "text-sm/6 space-x-2 h-full px-6 flex items-center justify-center font-semibold  relative",
+                  Astro.url.pathname.startsWith(
+                    `/docs/${item.group.toLowerCase()}`
+                  )
+                    ? "text-on-surface"
+                    : "text-on-surface-variant hover:text-on-surface"
+                )}
+              >
+                {item.group.toLowerCase() === "typescript-syntax" && (
+                  <TypeScriptFile
+                    class="size-5"
+                    aria-hidden="true"
+                    data-slot="icon"
+                  />
+                )}
+
+                {item.group.toLowerCase() === "platform" && (
+                  <AppWindow
+                    class="size-5"
+                    aria-hidden="true"
+                    data-slot="icon"
+                  />
+                )}
+                <span>{item.label}</span>
+              </a>
+
+              {Astro.url.pathname.startsWith(
+                `/docs/${item.group.toLowerCase()}`
+              ) && (
+                <span
+                  transition:name="docs-group"
+                  transition:animate="initial"
+                  class="absolute -bottom-3 inset-x-8 bg-primary h-px rounded-full"
+                />
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <!-- Mobile  -->
+    <div class="flex items-center md:hidden w-full">
+      <MobileHeader currentGroup={currentGroup} client:load>
+        <MobileGroupSelect {groups} client:load />
+        <NavItems currentID={currentID} currentGroup={currentGroup} />
+      </MobileHeader>
+    </div>
+    <div class="flex items-center md:mr-4 mr-2.5 md:w-56 w-12">
+      {/* DOC SEARCH */}
+      <!-- <div id="docsearch" class="lg:w-9 w-8"></div> -->
+      <span
+        class="cursor-pointer relative h-8 w-full items-center md:gap-2 rounded-lg md:px-2 text-sm text-on-surface-variant ring-1 transition ui-not-focus-visible:outline-none flex md:bg-surface-high/50 hover:bg-surface-high dark:ring-inset ring-outline-variant hover:ring-outline"
+      >
+        <span class="flex items-center w-full">
+          <span
+            class="flex md:space-x-2 items-center w-full justify-center md:justify-start"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="fill-on-surface-variant size-5 md:size-4"
+              viewBox="0 0 256 256"
+              ><path
+                d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"
+              ></path>
+            </svg>
+            <span class="hidden md:block">Quick search...</span>
+          </span>
+          <kbd
+            class="ml-auto hidden md:flex space-x-0.5 font-base text-on-surface-variant"
+          >
+            <kbd class="font-sans">Ctrl</kbd>
+            <kbd class="font-sans">K</kbd>
+          </kbd>
+        </span>
+
+        <span transition:persist id="docsearch"></span>
+      </span>
+    </div>
+  </div>
+</div>
+
+<script>
+  import docsearch from "@docsearch/js";
+
+  function setupDocs() {
+    docsearch({
+      container: "#docsearch",
+      appId: "YKWRMQV62Y",
+      indexName: "pandaci",
+      apiKey: "376f84af69cf3fcdf94bc9040ad76163",
+    });
+  }
+
+  setupDocs();
+  document.addEventListener("astro:after-swap", setupDocs);
+</script>

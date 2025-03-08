@@ -1,0 +1,74 @@
+---
+title: Quick Start
+description: Create a CI/CD pipeline in minutes
+icon: RocketLaunch
+---
+
+{% alert level="check" %}
+
+**Prerequisites**
+
+You need an account before starting, create one [here](https://app.pandaci.com/signup).
+
+{% /alert %}
+
+## Create a new project
+
+Once logged in, you can create a new project by clicking on the **New Project** button located at the top right corner of the projects page.
+
+![List of available github repos in the panda-ci app](./imgs/new-project.png)
+
+{% alert level="info" %}
+
+If you can't see the repo you want, make sure our [GitHub app](https://github.com/apps/pandaci-com/installations/new) has access to it.
+
+{% /alert %}
+
+## Write your first workflow
+
+PandaCI uses [Deno](https://deno.com) to define workflows. Don't worry, you don't need to know Deno to get started.
+
+Create a new file called `.pandaci/hello-world.workflow.ts` and add the following code:
+
+```typescript {% title=".pandaci/hello-world.workflow.ts" %}
+import { docker, $, job, env } from "jsr:@pandaci/workflow";
+
+// Creates a docker task on a 4-core machine
+// same as wrapping with `job("some-name", () => { ... })`
+docker("ubuntu:latest", { name: "hello world" }, () => {
+  // Runs a shell command
+  $`echo "Hello, world! from branch: ${env.PANDACI_BRANCH}"`;
+});
+
+// Creates 2 docker tasks on an 2-core machine
+job("Job 2", { runner: "ubuntu-2x" }, async () => {
+  let files = '';
+  await docker("ubuntu:latest", async () => {
+    // Runs the command in the .pandaci directory
+    // and stores the output as a string
+    files = await $`ls`.cwd(".pandaci").text();
+  });
+  docker("ubuntu:latest", () => {
+    // we can easily share data between tasks or even jobs
+    $`echo "files from another task: ${files}"`;
+  });
+});
+```
+
+{% alert level="knowledge" %}
+
+Learn more about the [workflow syntax](/docs/typescript/api/overview).
+
+{% /alert %}
+
+
+PandaCI will run any files in the **.pandaci** directory that end with **.workflow.ts**. By default, they're triggered on every push. Learn how to [configure triggers](/docs/typescript/config/triggers).
+
+## Commit and push your changes
+
+After pushing, PandaCI will automatically detect the new workflow and start running it. You can see the progress in the PandaCI dashboard.
+
+
+
+### Congratulations 🎉
+You've just created your first CI/CD pipeline with PandaCI.

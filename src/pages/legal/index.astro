@@ -1,0 +1,40 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="Legal" description="Pandaci's legal documents.">
+  <div class="max-w-3xl px-8 mx-auto mt-24">
+    <h1 class="text-4xl font-bold">Terms and Conditions</h1>
+  </div>
+  <div class="grid grid-cols-2 px-4 gap-8 max-w-3xl mx-auto mt-12">
+    {
+      [
+        {
+          name: "Support Policy",
+          url: "/legal/support-policy",
+        },
+        {
+          name: "SAAS Agreement",
+          url: "/legal/saas-agreement",
+        },
+        {
+          name: "Privacy Policy",
+          url: "/legal/privacy-policy",
+        },
+        {
+          name: "Acceptable Use Policy",
+          url: "/legal/acceptable-use-policy",
+        },
+      ].map(({ name, url }) => (
+        <div class="relative flex items-center space-x-3 rounded-lg border border-outline-variant bg-surface-high px-6 py-5 shadow-xs focus-within:ring-2 focus-within:ring-green-500 focus-within:ring-offset-2 ring-offset-surface hover:border-outline">
+          <div class="min-w-0 flex-1">
+            <a href={url} class="focus:outline-hidden">
+              <span class="absolute inset-0" aria-hidden="true" />
+              <p class="text-sm font-medium text-on-surface">{name}</p>
+            </a>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</Layout>

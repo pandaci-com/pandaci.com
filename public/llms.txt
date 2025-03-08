@@ -1,0 +1,13 @@
+# PandaCI Documentation for LLMs
+
+> PandaCI is a modern continuous integration and deployment platform (CI/CD). PandaCIs workflows are programmed with TypeScript instead of being declared with a syntax like YAML. This allows PandaCIs syntax to be learned in minutes and lets developers use the same language they write their applications to define their CI/CD workflows.
+
+## Documentation Sets
+
+- [Complete documentation](https://pandaci.com/llms-full.txt): The complete PandaCI documentation including all examples and additional content
+
+
+## Notes
+
+- The complete documentation includes all content from the official documentation
+- The content is automatically generated from the same source as the official documentation

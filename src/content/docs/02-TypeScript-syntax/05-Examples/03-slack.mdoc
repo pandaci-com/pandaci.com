@@ -1,0 +1,134 @@
+---
+title: Slack notifications
+description: Send a Slack notification when a workflow fails
+icon: Slack
+---
+
+
+{% alert level="check" %}
+
+**Prerequisites**
+
+You need an account before starting, create one [here](https://app.pandaci.com/signup).
+
+{% /alert %}
+
+We can use the offical slack npm package to send notifications to a slack channel.
+
+## Prerequisites
+
+Since we're just using the offical slack npm package, there is not one specific way to set up slack notifications.
+For this example, we're going to create a slack app and use a bot token to send messages.
+
+### 1. Create a slack app
+
+Go to the [slack api page](https://api.slack.com/apps) and click on **Create New App**.
+
+For our example, we only need the `chat:write` permission. You should add more permissions depending on your use case.
+
+Use the following manifest to quickly create a slack app with the necessary permissions:
+```json
+{
+    "_metadata": {
+        "major_version": 1,
+        "minor_version": 1
+    },
+    "display_information": {
+        "name": "PandaCI Slack App",
+        "description": "Sends workflow notifications from the greatest CI/CD platform"
+    },
+    "features": {
+        "bot_user": {
+            "display_name": "PandaCI Bot",
+            "always_online": true
+        },
+        "app_home": {
+            "home_tab_enabled": false
+        }
+    },
+    "oauth_config": {
+        "scopes": {
+            "bot": [
+                "chat:write"
+            ]
+        }
+    }
+}
+```
+
+### 2. Install the app
+
+In your slack app settings, click on **Install app** and follow the instructions.
+
+### 3. Save the bot token
+
+Copy the bot token and add it to your PandaCI project variables. For this example, we're going to name it `SLACK_BOT_TOKEN`.
+
+### 4. Get the channel id
+
+{% alert level="knowledge" %}
+You can skip this if you only want to send messages directly to users.
+{% /alert %}
+
+You can find the channel id in the channel details modal. For this example, we're going to store it in the `SLACK_CHANNEL_ID` variable.
+But since this isn't a secret, you can also hardcode it in your workflow.
+
+Learn more about [secrets](/docs/platform/overview/secrets).
+
+{% alert level="info" %}
+
+Make sure you add the slack app to the channel you want to send messages to.
+
+{% /alert %}
+
+## Simple example
+
+```typescript {% title=".pandaci/slack.workflow.ts" %}
+import { docker, $, env } from "jsr:@pandaci/workflow";
+import { WebClient } from "npm:@slack/web-api";
+
+const slack = new WebClient(env.SLACK_BOT_TOKEN);
+
+docker("ubuntu:latest", async () => {
+  // A task which fails
+  await $`exit 1`;
+}).catch(() =>
+  // Send a message to our Slack channel
+  slack.chat.postMessage({
+    channel: env.SLACK_CHANNEL_ID,
+    text: `Workflow failed!`,
+  })
+);
+```
+
+## Sending markdown messages
+
+You can send markdown messages to slack by setting the `mrkdwn` property to `true`.
+
+```typescript
+slack.chat.postMessage({
+  channel: env.SLACK_CHANNEL_ID,
+  text: `# Workflow failed!`,
+  mrkdwn: true,
+});
+```
+
+## Sending messages with blocks
+
+You can send messages with blocks to slack by setting the `blocks` property.
+
+```typescript
+slack.chat.postMessage({
+  channel: env.SLACK_CHANNEL_ID,
+  text: `Workflow failed!`,
+  blocks: [
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "*Workflow failed!*",
+      },
+    },
+  ],
+});
+```

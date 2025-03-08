@@ -1,0 +1,104 @@
+---
+title: Docker Tasks
+description: Docker tasks let you execute commands in a Docker container
+icon: TerminalWindow
+---
+
+
+## Overview
+
+Docker tasks are return a promise that resolves when the task is complete,
+if there are unawaited exec promises, we'll wait for them to complete before resolving the task.
+
+
+{% alert level="knowledge" %}
+
+**Usage without a job** - You can run tasks without wrapping with a job.
+We'll still create a default job with the **"ubuntu-4x"** runner for you.
+
+{% /alert %}
+
+
+## Example
+
+```typescript {% title=".pandaci/example.workflow.ts" %}
+import { docker, job } from "jsr:@pandaci/workflow"
+
+// Simple docker task
+await docker("ubuntu:latest", () => {
+  // ...
+})
+
+// Docker task with a custom runner
+await job("A very cool job", { runner: "ubuntu-8x" }, () => {
+  docker("ubuntu:latest", { name: "A very cool task" }, () => {
+    // ...
+  })
+})
+```
+
+## Volume Mounting
+
+You can mount Docker volumes by passing an array of volumes to the `volumes` option.
+
+{% alert level="info" %}
+
+**Repo volume** - We always mount the repository root as **/home/pandaci/repo**.
+
+This volume is a bind mount, so all tasks in the same job will see the same files.
+
+{% /alert %}
+
+```typescript {% title=".pandaci/volumes.workflow.ts" %}
+import { docker, job, volume } from "jsr:@pandaci/workflow"
+
+job("Volume Mounting", () => {
+    // Optionally pass a host path { host: "/path/on/host" }
+    const cache = volume()
+
+    docker("ubuntu:latest", { volumes: [cache('/path/on/container')] }, () => {
+        // ...
+    })
+})
+```
+
+Volumes must be only be created inside a job, and they are only accessible to tasks in the same job.
+
+## Methods
+
+### docker.if
+
+The `if` method allows you to skip a docker task based on a condition.
+
+```typescript {% title=".pandaci/conditional.workflow.ts" %}
+docker.if(env.PANDACI_BRANCH === "main")("Skip this task", () => {
+  // ...
+})
+```
+
+### docker.nothrow
+
+The `nothrow` method allows you to suppress errors if the condition is met.
+
+```typescript {% title=".pandaci/nothrow.workflow.ts" %}
+docker.nothrow("Skip this task", () => {
+  // ...
+})
+```
+
+### docker.skip
+
+The `skip` method allows you to skip a docker task if the condition is met.
+
+```typescript {% title=".pandaci/skip.workflow.ts" %}
+docker.skip("Skip this task", () => {
+  // ...
+})
+```
+
+## Docker options
+
+- **name** - The name of the task. Defaults to the name of the function.
+- **skip** - Skip the task if the condition is met. Defaults to **false**.
+- **throws** - Throw an error if the condition is met. Defaults to **true**.
+- **volumes** - An array of volumes to mount in the container.

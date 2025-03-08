@@ -1,0 +1,18 @@
+---
+import NavItems from "./navItems.astro";
+
+interface Props {
+  currentID: string;
+  currentGroup: string;
+}
+
+const { currentID, currentGroup } = Astro.props;
+---
+
+<div class="sticky top-[6.5rem] lg:w-60 w-52">
+  <div class="overflow-x-hidden -ml-0.5 py-6 pl-0.5 max-h-[calc(100vh-7rem)]">
+    <nav class="text-base md:text-sm mx-4 mt-4">
+      <NavItems currentID={currentID} currentGroup={currentGroup} />
+    </nav>
+  </div>
+</div>

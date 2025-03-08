@@ -1,0 +1,88 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --color-primary-light: var(--color-green-600);
+    --color-primary-dark: var(--color-green-500);
+
+    --color-secondary-light: var(--color-blue-500);
+    --color-secondary-dark: var(--color-blue-700);
+
+    --color-tertiary-light: var(--color-violet-500);
+    --color-tertiary-dark: var(--color-pink-400);
+
+    --color-surface-dark: var(--color-zinc-900);
+    --color-surface-light: var(--color-neutral-100);
+
+    --color-on-surface-dark: var(--color-zinc-50);
+    --color-on-surface-light: var(--color-neutral-900);
+
+    --color-on-surface-variant-dark: var(--color-zinc-400);
+    --color-on-surface-variant-light: var(--color-neutral-600);
+
+    --color-outline-dark: var(--color-zinc-600);
+    --color-outline-light: var(--color-neutral-300);
+
+    --color-outline-variant-dark: var(--color-zinc-800);
+    --color-outline-variant-light: var(--color-neutral-200);
+
+    --color-surface-high-dark: var(--color-zinc-800);
+    --color-surface-high-light: var(--color-neutral-200);
+
+    --color-surface-low-dark: #121214;
+    --color-surface-low-light: var(--color-neutral-50);
+
+    /** Light colors */
+
+    --color-primary: var(--color-primary-light);
+    --color-secondary: var(--color-secondary-light);
+    --color-tertiary: var(--color-tertiary-light);
+
+    --color-surface: var(--color-surface-light);
+    --color-surface-inverse: var(--color-surface-dark);
+    --color-surface-high: var(--color-surface-high-light);
+    --color-surface-high-inverse: var(--color-surface-high-dark);
+    --color-surface-low: var(--color-surface-low-light);
+
+    --color-on-surface: var(--color-on-surface-light);
+    --color-on-surface-inverse: var(--color-on-surface-dark);
+    --color-on-surface-variant: var(--color-on-surface-variant-light);
+
+    --color-outline: var(--color-outline-light);
+    --color-outline-variant: var(--color-outline-variant-light);
+
+    /* Extending the theme  */
+    --container-8xl: 92rem;
+}
+
+html.dark {
+    /** Dark colors */
+    --color-primary: var(--color-primary-dark);
+    --color-secondary: var(--color-secondary-dark);
+    --color-tertiary: var(--color-tertiary-dark);
+
+    --color-surface: var(--color-surface-dark);
+    --color-surface-inverse: var(--color-surface-light);
+    --color-surface-high: var(--color-surface-high-dark);
+    --color-surface-high-inverse: var(--color-surface-high-light);
+    --color-surface-low: var(--color-surface-low-dark);
+
+    --color-on-surface: var(--color-on-surface-dark);
+    --color-on-surface-inverse: var(--color-on-surface-light);
+    --color-on-surface-variant: var(--color-on-surface-variant-dark);
+
+    --color-outline: var(--color-outline-dark);
+    --color-outline-variant: var(--color-outline-variant-dark);
+}
+
+.scrollbar-thin {
+    scrollbar-width: thin;
+}
+
+html,
+body {
+    background-color: var(--color-surface);
+    overscroll-behavior-y: none;
+}
