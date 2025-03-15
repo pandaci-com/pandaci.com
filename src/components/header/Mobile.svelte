@@ -31,7 +31,7 @@
     const links = [
         { name: "Get started", href: "https://app.pandaci.com/signup" },
         { name: "Sign in", href: "https://app.pandaci.com/login" },
-        { name: "GitHub", href: "https://github.com/pandaci-com/pandaci" },
+        // { name: "GitHub", href: "https://github.com/pandaci-com/pandaci" },
     ];
 </script>
 
