@@ -25,6 +25,10 @@ import Mobile from "./Mobile.svelte";
                 {
                     [
                         {
+                            name: "Why?",
+                            href: "/docs/platform/overview/why-pandaci",
+                        },
+                        {
                             name: "Docs",
                             href: "/docs/platform/overview/quick-start",
                             start: "/docs",
@@ -39,7 +43,7 @@ import Mobile from "./Mobile.svelte";
                             href={item.href}
                             class="text-sm/6 h-full px-6 flex items-center justify-center font-semibold text-on-surface relative"
                         >
-                            <Indicator href={item.start} />
+                            {item.start && <Indicator href={item.start} />}
                             <span class="relative">{item.name}</span>
                         </a>
                     ))

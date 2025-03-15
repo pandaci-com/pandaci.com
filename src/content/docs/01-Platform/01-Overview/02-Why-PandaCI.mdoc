@@ -1,0 +1,111 @@
+---
+title: Why PandaCI Exists
+description: PandaCI introduces a radically new way to build CI/CD pipelines, why should you care?
+icon: Question
+---
+
+
+## The Problem with Traditional CI/CD
+Most CI/CD platforms use declarative languages like YAML to define workflows. While this approach works, it has its drawbacks:
+
+- **Platform-Specific Learning Curve** – YAML syntax is unique to each CI/CD platform, meaning even experienced developers must spend time navigating extensive documentation just to structure workflows correctly.
+- **YAML is Limiting** – Writing complex workflows in YAML quickly becomes messy and hard to maintain. It lacks built-in support for reusability, forcing duplication and making it difficult to follow the DRY (Don't Repeat Yourself) principle.
+- **Script Hell** – Any logic beyond running basic commands often requires external scripts or intricate shell commands, adding unnecessary complexity and maintenance overhead.
+- **Debugging is a Nightmare** – YAML offers no built-in debugging tools. Diagnosing issues means relying on slow trial-and-error processes, making troubleshooting frustrating and time-consuming.
+Less Developer Control – In many teams, DevOps engineers own the CI/CD pipeline, leaving developers with little control over their own workflows. Any changes require coordination, slowing down iteration speed.
+
+## The PandaCI Solution: CI/CD as Code
+PandaCI rethinks CI/CD by replacing YAML with TypeScript, enabling workflows to be defined using a real programming language.
+
+{% alert level="info" %}
+
+Reach out if you want us to support additional languages like Python, Ruby, or Go.
+
+{% /alert %}
+
+This provides several key advantages:
+
+### 1. **Code, Not Configuration**
+Instead of wrestling with YAML’s limitations, PandaCI lets you write workflows using TypeScript or JavaScript. This means:
+
+- Use variables, loops, and conditionals naturally.
+- Import and reuse functions across workflows.
+- Leverage npm packages to extend functionality.
+
+Example:
+```ts {% title=".pandaci/hello-world.workflow.ts" %}
+import { docker, $ } from "@pandaci/workflow";
+
+docker("ubuntu:latest", async () => {
+    await $`echo "Hello, World!"`;
+});
+```
+
+### 2. **Better Reusability**
+With TypeScript, you can define reusable functions and modules, making it easy to share logic between workflows:
+Example:
+```ts {% title=".pandaci/build-utils.ts" %}
+import { $ } from "@pandaci/workflow";
+
+export async function initPnpm() {
+  await $`PNPM_HOME="/pnpm"`;
+  await $`PATH="$PNPM_HOME:$PATH"`;
+  await $`corepack enable`;
+  await $`pnpm i`;
+}
+
+```
+Then reuse it in multiple jobs:
+```ts {% title=".pandaci/ci.workflow.ts" %}
+import { docker } from "@pandaci/workflow";
+import { initPnpm } from "./build-utils.ts";
+
+docker("ubuntu:latest", async () => {
+    await initPnpm();
+    // ...
+});
+```
+
+### 3. **Powerful Extensibility**
+Want to integrate with a custom API? Fetch data from your own system? Simply use JavaScript’s existing ecosystem:
+```ts
+const response = await fetch("https://api.example.com/build-params");
+const buildParams = await response.json();
+```
+
+Even better, use an npm package to handle complex tasks:
+
+```typescript {% title=".pandaci/slack.workflow.ts" %}
+import { docker, $, env } from "jsr:@pandaci/workflow";
+import { WebClient } from "npm:@slack/web-api";
+
+const slack = new WebClient(env.SLACK_BOT_TOKEN);
+
+docker("ubuntu:latest", async () => {
+  // A task which fails
+  await $`exit 1`;
+}).catch(() =>
+  // Send a message to our Slack channel
+  slack.chat.postMessage({
+    channel: env.SLACK_CHANNEL_ID,
+    text: `Workflow failed!`,
+  })
+);
+```
+
+### 4. More Developer Control
+
+There's a growing trend where developers are losing control over their CI/CD pipelines with DevOps teams owning the process.
+We believe that developers should have more control over their CI/CD pipelines.
+
+By using the same language to define workflows as they do to write their applications, developers can own and iterate on their CI/CD pipelines without needing DevOps intervention for every change.
+
+## Why Choose PandaCI?
+
+- **Developer-Friendly** – Write workflows in TypeScript, a language you already know and love.
+- **Better Reusability** – Define reusable functions and modules to share logic across workflows.
+- **Powerful Extensibility** – Leverage the vast npm ecosystem to handle complex tasks with ease.
+- **More Developer Control** – Own and iterate on your CI/CD pipelines without needing DevOps intervention.
+- **Faster Iteration Speeds** – Write, test, and deploy changes faster than ever before.
+
+PandaCI isn’t just another CI/CD tool – it’s a reimagined approach that brings the power of real code to automation. Ready to try it? [Get started today](https://app.pandaci.com/signup).
