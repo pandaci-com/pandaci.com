@@ -7,324 +7,333 @@ import MobilePricing from "../components/pricing/mobilePricing.svelte";
 ---
 
 <Layout title="Pricing" description="Panda CI pricing page">
-  <div class="bg-surface py-24 sm:py-32">
-    <div class="mx-auto max-w-4xl px-6 max-lg:text-center lg:max-w-7xl lg:px-8">
-      <h1
-        class="text-5xl font-semibold tracking-tight text-balance text-on-surface sm:text-6xl lg:text-pretty"
-      >
-        Fair pricing that grows with your team size
-      </h1>
-      <p
-        class="mt-6 max-w-2xl text-lg font-medium text-pretty text-on-surface-variant max-lg:mx-auto sm:text-xl/8"
-      >
-        Our generours free tier is perfect for small teams and hobbyists. As you
-        grow, our Pro and Enterprise plans offer more power and features to help
-        you scale.
-      </p>
-    </div>
-    <div
-      class="relative pt-16 sm:pt-24 border-b border-outline overflow-hidden pb-24"
-    >
-      <div
-        class="absolute inset-x-0 top-0 h-full w-full items-center px-5 dark:[background:radial-gradient(125%_200%_at_50%_10%,_rgb(24,24,27)_40%,_oklch(41.47%_0.1455_290.48)_75%)] [background:radial-gradient(125%_200%_at_50%_10%,_#f4f4f5_40%,_rgb(157,123,255)_75%)]"
-      >
-      </div>
-      <div class="relative mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8">
-        <div class="grid grid-cols-1 gap-10 lg:grid-cols-3">
-          <PriceCard
-            cta="Get started"
-            planName="Starter"
-            planDescription="Get up and running quickly."
-            price={"0"}
-            href="https://app.pandaci.com/signup"
-            features={[
-              "6000 Build Minutes",
-              "Up to 4-core runners",
-              "5 Committers",
-              "10 Projects",
-              "Unlimited users",
-            ]}
-          />
-          <PriceCard
-            cta="Get started"
-            planName="Pro"
-            planDescription="Scales from small to large teams."
-            price="10"
-            href="https://app.pandaci.com/signup"
-            features={[
-              "6000 Build minutes included",
-              "$1 per 500 additional minutes",
-              "5 Committers included",
-              "$5 per additional committer",
-              "Up to 8-core runners",
-              "100 Projects",
-              "Email support",
-            ]}
-          />
-          <PriceCard
-            cta="Chat with us"
-            planName="Enterprise"
-            planDescription="For large teams and enterprises."
-            price="600+"
-            href="mailto:support@pandaci.com"
-            features={[
-              "Up to 16-core runners",
-              "Unlimited Projects",
-              "Volume discounts",
-              "Dedicated support",
-              "SAML (coming soon)",
-              "Custom domain",
-            ]}
-          />
-        </div>
-      </div>
-    </div>
-    <div class="mx-auto max-w-2xl px-6 pt-16 sm:pt-24 lg:max-w-7xl lg:px-8">
-      <table class="w-full text-left max-sm:hidden">
-        <caption class="sr-only"> Pricing plan comparison </caption>
-        <colgroup>
-          <col class="w-2/5" />
-          <col class="w-1/5" />
-          <col class="w-1/5" />
-          <col class="w-1/5" />
-        </colgroup>
-        <thead>
-          <tr>
-            <td class="p-0"></td>
-            {
-              ["Free", "Pro", "Enterprise"].map((item) => (
-                <th scope="col" class="p-0">
-                  <div class="text-sm font-semibold text-green-600">
-                    {item} <span class="sr-only">plan</span>
-                  </div>
-                </th>
-              ))
-            }
-          </tr>
-          <tr>
-            <th class="p-0"></th>
-            {
-              [
-                {
-                  href: "https://app.pandaci.com/signup",
-                  cta: "Get started",
-                },
-                {
-                  href: "https://app.pandaci.com/signup",
-                  cta: "Get started",
-                },
-                {
-                  href: "mailto:support@pandaci.com",
-                  cta: "Chat with us",
-                },
-              ].map((item) => (
-                <td class="px-0 pt-3 pb-0">
-                  <Button color="dark/white" href={item.href} class="">
-                    {item.cta}
-                  </Button>
-                </td>
-              ))
-            }
-          </tr>
-        </thead>
-        <tbody class="group">
-          <tr>
-            <th
-              scope="colgroup"
-              colspan="4"
-              class="px-0 pt-10 pb-0 group-first-of-type:pt-5"
-            >
-              <div
-                class="-mx-4 rounded-lg bg-surface-high px-4 py-3 text-sm/6 font-semibold text-on-surface"
-              >
-                Usage
-              </div>
-            </th>
-          </tr>
-          <PricingRow
-            name="Included build minutes"
-            freeValue={"6000"}
-            proValue={"6000"}
-            enterpriseValue={"Custom"}
-          />
-          <PricingRow
-            name="Additional build minutes"
-            freeValue={false}
-            proValue={"$1 per 500"}
-            enterpriseValue={"Custom"}
-          />
-          <PricingRow
-            name="Included committers"
-            freeValue={"5"}
-            proValue={"5"}
-            enterpriseValue={"Custom"}
-          />
-          <PricingRow
-            name="Additional committers"
-            freeValue={false}
-            proValue={"$5 per additional"}
-            enterpriseValue={"Custom"}
-          />
-        </tbody>
-        <tbody class="group">
-          <tr>
-            <th
-              scope="colgroup"
-              colspan="4"
-              class="px-0 pt-10 pb-0 group-first-of-type:pt-5"
-            >
-              <div
-                class="-mx-4 rounded-lg bg-surface-high px-4 py-3 text-sm/6 font-semibold text-on-surface"
-              >
-                Features
-              </div>
-            </th>
-          </tr>
-
-          <PricingRow
-            name="Max runner size"
-            freeValue={"4-core / 16GB ram"}
-            proValue={"8-core / 32GB ram"}
-            enterpriseValue={"16-core / 64GB ram"}
-          />
-
-          <PricingRow
-            name="Runner concurrency"
-            freeValue={"20"}
-            proValue={"40"}
-            enterpriseValue={"Custom"}
-          />
-
-          <PricingRow
-            name="Projects"
-            freeValue={"10"}
-            proValue={"100"}
-            enterpriseValue={"Unlimited"}
-          />
-          <PricingRow
-            name="Users"
-            freeValue={"Unlimited"}
-            proValue={"Unlimited"}
-            enterpriseValue={"Unlimited"}
-          />
-          <PricingRow
-            name="SAML"
-            freeValue={false}
-            proValue={false}
-            enterpriseValue={"Coming soon"}
-          />
-          <PricingRow
-            name="Custom domain"
-            freeValue={false}
-            proValue={false}
-            enterpriseValue={true}
-          />
-        </tbody>
-
-        <tbody class="group">
-          <tr>
-            <th
-              scope="colgroup"
-              colspan="4"
-              class="px-0 pt-10 pb-0 group-first-of-type:pt-5"
-            >
-              <div
-                class="-mx-4 rounded-lg bg-surface-high px-4 py-3 text-sm/6 font-semibold text-on-surface"
-              >
-                Support
-              </div>
-            </th>
-          </tr>
-
-          <PricingRow
-            name="Email"
-            freeValue={"We'll try"}
-            proValue={true}
-            enterpriseValue={true}
-          />
-          <PricingRow
-            name="Phone"
-            freeValue={false}
-            proValue={false}
-            enterpriseValue={true}
-          />
-          <PricingRow
-            name="Dedicated support rep"
-            freeValue={false}
-            proValue={false}
-            enterpriseValue={true}
-          />
-          <PricingRow
-            name="1:1 onboarding"
-            freeValue={false}
-            proValue={false}
-            enterpriseValue={true}
-          />
-        </tbody>
-      </table>
-      <div class="sm:hidden">
-        <MobilePricing client:load />
-      </div>
-    </div>
-  </div>
-
-  <!-- FAQs -->
-  <div class="bg-surface">
-    <div class="mx-auto max-w-7xl px-6 py-16 sm:py-24 lg:px-8">
-      <h2
-        class="text-4xl font-semibold tracking-tight text-on-surface sm:text-5xl"
-      >
-        Frequently asked questions
-      </h2>
-      <p class="mt-6 max-w-2xl text-base/7 text-on-surface-variant">
-        Have a different question and can’t find the answer you’re looking for?
-        Reach out to our support team by <a
-          href="mailto:support@pandaci.com"
-          class="font-semibold text-primary hover:text-primary/90 underline"
-          >sending us an email</a
-        > and we’ll get back to you as soon as we can.
-      </p>
-      <div class="mt-20">
-        <dl
-          class="space-y-16 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:space-y-0 sm:gap-y-16 lg:grid-cols-3 lg:gap-x-10"
+    <div class="bg-surface py-24 sm:py-32">
+        <div
+            class="mx-auto max-w-4xl px-6 max-lg:text-center lg:max-w-7xl lg:px-8"
         >
-          <div>
-            <dt class="text-base/7 font-semibold text-on-surface">
-              What&#039;s a committer?
-            </dt>
-            <dd class="mt-2 text-base/7 text-on-surface-variant">
-              A committer is a user (or bot) who authors a commit in your repo.
-              We first try to match the committers VCS (e.g. Github) account to
-              a PandaCI account, if we can't find a match, then we'll use the
-              email address associated with the commit.
-            </dd>
-          </div>
+            <h1
+                class="text-5xl font-semibold tracking-tight text-balance text-on-surface sm:text-6xl lg:text-pretty"
+            >
+                Fair pricing that grows with your team size
+            </h1>
+            <p
+                class="mt-6 max-w-2xl text-lg font-medium text-pretty text-on-surface-variant max-lg:mx-auto sm:text-xl/8"
+            >
+                Our generous free tier is perfect for small teams and hobbyists.
+                As you grow, our Pro and Enterprise plans offer more power and
+                features to help you scale.
+            </p>
+        </div>
+        <div
+            class="relative pt-16 sm:pt-24 border-b border-outline overflow-hidden pb-24"
+        >
+            <div
+                class="absolute inset-x-0 top-0 h-full w-full items-center px-5 dark:[background:radial-gradient(125%_200%_at_50%_10%,_rgb(24,24,27)_40%,_oklch(41.47%_0.1455_290.48)_75%)] [background:radial-gradient(125%_200%_at_50%_10%,_#f4f4f5_40%,_rgb(157,123,255)_75%)]"
+            >
+            </div>
+            <div class="relative mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8">
+                <div class="grid grid-cols-1 gap-10 lg:grid-cols-3">
+                    <PriceCard
+                        cta="Get started"
+                        planName="Starter"
+                        planDescription="Get up and running quickly."
+                        price={"0"}
+                        href="https://app.pandaci.com/signup"
+                        features={[
+                            "6000 Build Minutes",
+                            "Up to 4-core runners",
+                            "5 Committers",
+                            "10 Projects",
+                            "Unlimited users",
+                        ]}
+                    />
+                    <PriceCard
+                        cta="Get started"
+                        planName="Pro"
+                        planDescription="Scales from small to large teams."
+                        price="10"
+                        href="https://app.pandaci.com/signup"
+                        features={[
+                            "6000 Build minutes included",
+                            "$1 per 500 additional minutes",
+                            "5 Committers included",
+                            "$5 per additional committer",
+                            "Up to 8-core runners",
+                            "100 Projects",
+                            "Email support",
+                        ]}
+                    />
+                    <PriceCard
+                        cta="Chat with us"
+                        planName="Enterprise"
+                        planDescription="For large teams and enterprises."
+                        price="600+"
+                        href="mailto:support@pandaci.com"
+                        features={[
+                            "Up to 16-core runners",
+                            "Unlimited Projects",
+                            "Volume discounts",
+                            "Dedicated support",
+                            "SAML (coming soon)",
+                            "Custom domain",
+                        ]}
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="mx-auto max-w-2xl px-6 pt-16 sm:pt-24 lg:max-w-7xl lg:px-8">
+            <table class="w-full text-left max-sm:hidden">
+                <caption class="sr-only"> Pricing plan comparison </caption>
+                <colgroup>
+                    <col class="w-2/5" />
+                    <col class="w-1/5" />
+                    <col class="w-1/5" />
+                    <col class="w-1/5" />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <td class="p-0"></td>
+                        {
+                            ["Free", "Pro", "Enterprise"].map((item) => (
+                                <th scope="col" class="p-0">
+                                    <div class="text-sm font-semibold text-green-600">
+                                        {item} <span class="sr-only">plan</span>
+                                    </div>
+                                </th>
+                            ))
+                        }
+                    </tr>
+                    <tr>
+                        <th class="p-0"></th>
+                        {
+                            [
+                                {
+                                    href: "https://app.pandaci.com/signup",
+                                    cta: "Get started",
+                                },
+                                {
+                                    href: "https://app.pandaci.com/signup",
+                                    cta: "Get started",
+                                },
+                                {
+                                    href: "mailto:support@pandaci.com",
+                                    cta: "Chat with us",
+                                },
+                            ].map((item) => (
+                                <td class="px-0 pt-3 pb-0">
+                                    <Button
+                                        color="dark/white"
+                                        href={item.href}
+                                        class=""
+                                    >
+                                        {item.cta}
+                                    </Button>
+                                </td>
+                            ))
+                        }
+                    </tr>
+                </thead>
+                <tbody class="group">
+                    <tr>
+                        <th
+                            scope="colgroup"
+                            colspan="4"
+                            class="px-0 pt-10 pb-0 group-first-of-type:pt-5"
+                        >
+                            <div
+                                class="-mx-4 rounded-lg bg-surface-high px-4 py-3 text-sm/6 font-semibold text-on-surface"
+                            >
+                                Usage
+                            </div>
+                        </th>
+                    </tr>
+                    <PricingRow
+                        name="Included build minutes"
+                        freeValue={"6000"}
+                        proValue={"6000"}
+                        enterpriseValue={"Custom"}
+                    />
+                    <PricingRow
+                        name="Additional build minutes"
+                        freeValue={false}
+                        proValue={"$1 per 500"}
+                        enterpriseValue={"Custom"}
+                    />
+                    <PricingRow
+                        name="Included committers"
+                        freeValue={"5"}
+                        proValue={"5"}
+                        enterpriseValue={"Custom"}
+                    />
+                    <PricingRow
+                        name="Additional committers"
+                        freeValue={false}
+                        proValue={"$5 per additional"}
+                        enterpriseValue={"Custom"}
+                    />
+                </tbody>
+                <tbody class="group">
+                    <tr>
+                        <th
+                            scope="colgroup"
+                            colspan="4"
+                            class="px-0 pt-10 pb-0 group-first-of-type:pt-5"
+                        >
+                            <div
+                                class="-mx-4 rounded-lg bg-surface-high px-4 py-3 text-sm/6 font-semibold text-on-surface"
+                            >
+                                Features
+                            </div>
+                        </th>
+                    </tr>
 
-          <div>
-            <dt class="text-base/7 font-semibold text-on-surface">
-              What happens if I go over my build minutes?
-            </dt>
-            <dd class="mt-2 text-base/7 text-on-surface-variant">
-              If you go over your build minutes and you're on a pro or
-              enterprise plan, we'll charge you for additional minutes in
-              increments of 500. If you're on a free plan, we'll pause your
-              builds until the next month.
-            </dd>
-          </div>
+                    <PricingRow
+                        name="Max runner size"
+                        freeValue={"4-core / 16GB ram"}
+                        proValue={"8-core / 32GB ram"}
+                        enterpriseValue={"16-core / 64GB ram"}
+                    />
 
-          <div>
-            <dt class="text-base/7 font-semibold text-on-surface">
-              Can I request a refund?
-            </dt>
-            <dd class="mt-2 text-base/7 text-on-surface-variant">
-              Yes, you can request a refund within 30 days of your purchase. If
-              you are over the 30-day period, please reach out to our support
-              and we'll try to figure something out. We have more details on our
-              refund policy in our terms of service.
-            </dd>
-          </div>
-        </dl>
-      </div>
+                    <PricingRow
+                        name="Runner concurrency"
+                        freeValue={"20"}
+                        proValue={"40"}
+                        enterpriseValue={"Custom"}
+                    />
+
+                    <PricingRow
+                        name="Projects"
+                        freeValue={"10"}
+                        proValue={"100"}
+                        enterpriseValue={"Unlimited"}
+                    />
+                    <PricingRow
+                        name="Users"
+                        freeValue={"Unlimited"}
+                        proValue={"Unlimited"}
+                        enterpriseValue={"Unlimited"}
+                    />
+                    <PricingRow
+                        name="SAML"
+                        freeValue={false}
+                        proValue={false}
+                        enterpriseValue={"Coming soon"}
+                    />
+                    <PricingRow
+                        name="Custom domain"
+                        freeValue={false}
+                        proValue={false}
+                        enterpriseValue={true}
+                    />
+                </tbody>
+
+                <tbody class="group">
+                    <tr>
+                        <th
+                            scope="colgroup"
+                            colspan="4"
+                            class="px-0 pt-10 pb-0 group-first-of-type:pt-5"
+                        >
+                            <div
+                                class="-mx-4 rounded-lg bg-surface-high px-4 py-3 text-sm/6 font-semibold text-on-surface"
+                            >
+                                Support
+                            </div>
+                        </th>
+                    </tr>
+
+                    <PricingRow
+                        name="Email"
+                        freeValue={"We'll try"}
+                        proValue={true}
+                        enterpriseValue={true}
+                    />
+                    <PricingRow
+                        name="Phone"
+                        freeValue={false}
+                        proValue={false}
+                        enterpriseValue={true}
+                    />
+                    <PricingRow
+                        name="Dedicated support rep"
+                        freeValue={false}
+                        proValue={false}
+                        enterpriseValue={true}
+                    />
+                    <PricingRow
+                        name="1:1 onboarding"
+                        freeValue={false}
+                        proValue={false}
+                        enterpriseValue={true}
+                    />
+                </tbody>
+            </table>
+            <div class="sm:hidden">
+                <MobilePricing client:load />
+            </div>
+        </div>
     </div>
-  </div>
+
+    <!-- FAQs -->
+    <div class="bg-surface">
+        <div class="mx-auto max-w-7xl px-6 py-16 sm:py-24 lg:px-8">
+            <h2
+                class="text-4xl font-semibold tracking-tight text-on-surface sm:text-5xl"
+            >
+                Frequently asked questions
+            </h2>
+            <p class="mt-6 max-w-2xl text-base/7 text-on-surface-variant">
+                Have a different question and can’t find the answer you’re
+                looking for? Reach out to our support team by <a
+                    href="mailto:support@pandaci.com"
+                    class="font-semibold text-primary hover:text-primary/90 underline"
+                    >sending us an email</a
+                > and we’ll get back to you as soon as we can.
+            </p>
+            <div class="mt-20">
+                <dl
+                    class="space-y-16 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:space-y-0 sm:gap-y-16 lg:grid-cols-3 lg:gap-x-10"
+                >
+                    <div>
+                        <dt class="text-base/7 font-semibold text-on-surface">
+                            What&#039;s a committer?
+                        </dt>
+                        <dd class="mt-2 text-base/7 text-on-surface-variant">
+                            A committer is a user (or bot) who authors a commit
+                            in your repo. We first try to match the committers
+                            VCS (e.g. Github) account to a PandaCI account, if
+                            we can't find a match, then we'll use the email
+                            address associated with the commit.
+                        </dd>
+                    </div>
+
+                    <div>
+                        <dt class="text-base/7 font-semibold text-on-surface">
+                            What happens if I go over my build minutes?
+                        </dt>
+                        <dd class="mt-2 text-base/7 text-on-surface-variant">
+                            If you go over your build minutes and you're on a
+                            pro or enterprise plan, we'll charge you for
+                            additional minutes in increments of 500. If you're
+                            on a free plan, we'll pause your builds until the
+                            next month.
+                        </dd>
+                    </div>
+
+                    <div>
+                        <dt class="text-base/7 font-semibold text-on-surface">
+                            Can I request a refund?
+                        </dt>
+                        <dd class="mt-2 text-base/7 text-on-surface-variant">
+                            Yes, you can request a refund within 30 days of your
+                            purchase. If you are over the 30-day period, please
+                            reach out to our support and we'll try to figure
+                            something out. We have more details on our refund
+                            policy in our terms of service.
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+    </div>
 </Layout>

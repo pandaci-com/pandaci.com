@@ -48,7 +48,7 @@ job("Job 2", { runner: "ubuntu-2x" }, async () => {
     // and stores the output as a string
     files = await $`ls`.cwd(".pandaci").text();
   });
-  docker("ubuntu:latest", () => {
+  await docker("ubuntu:latest", () => {
     // we can easily share data between tasks or even jobs
     $`echo "files from another task: ${files}"`;
   });
