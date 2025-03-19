@@ -4,84 +4,81 @@ import Mobile from "./Mobile.svelte";
 ---
 
 <header
-    class="bg-surface fixed top-0 inset-x-0 z-10 border-b border-outline-variant"
+  class="bg-surface fixed top-0 inset-x-0 z-10 border-b border-outline-variant"
 >
-    <nav
-        class="mx-auto flex max-w-8xl items-center justify-between lg:px-8"
-        aria-label="Global"
-    >
-        <div class="flex items-center gap-x-12 h-14">
+  <nav
+    class="mx-auto flex max-w-8xl items-center justify-between lg:px-8"
+    aria-label="Global"
+  >
+    <div class="flex items-center gap-x-12 h-14">
+      <a href="/" class="px-5 relative h-full flex items-center justify-center">
+        <Indicator href={"/"} />
+        <span class="sr-only">Panda CI</span>
+        <h1 class="text-2xl/8 relative font-semibold text-on-surface">
+          PandaCI
+        </h1>
+      </a>
+      <div class="hidden lg:flex lg:gap-x-2 h-14">
+        {
+          [
+            {
+              name: "Why?",
+              href: "/docs/platform/overview/why-pandaci",
+            },
+            {
+              name: "Docs",
+              href: "/docs/platform/overview/quick-start",
+              start: "/docs",
+            },
+            {
+              name: "Pricing",
+              href: "/pricing",
+              start: "/pricing",
+            },
+          ].map((item) => (
             <a
-                href="/"
-                class="px-5 relative h-full flex items-center justify-center"
+              href={item.href}
+              class="text-sm/6 h-full px-6 flex items-center justify-center font-semibold text-on-surface relative"
             >
-                <Indicator href={"/"} />
-                <span class="sr-only">Panda CI</span>
-                <h1 class="text-2xl/8 relative font-semibold text-on-surface">
-                    Panda CI
-                </h1>
+              {item.start && <Indicator href={item.start} />}
+              <span class="relative">{item.name}</span>
             </a>
-            <div class="hidden lg:flex lg:gap-x-2 h-14">
-                {
-                    [
-                        {
-                            name: "Why?",
-                            href: "/docs/platform/overview/why-pandaci",
-                        },
-                        {
-                            name: "Docs",
-                            href: "/docs/platform/overview/quick-start",
-                            start: "/docs",
-                        },
-                        {
-                            name: "Pricing",
-                            href: "/pricing",
-                            start: "/pricing",
-                        },
-                    ].map((item) => (
-                        <a
-                            href={item.href}
-                            class="text-sm/6 h-full px-6 flex items-center justify-center font-semibold text-on-surface relative"
-                        >
-                            {item.start && <Indicator href={item.start} />}
-                            <span class="relative">{item.name}</span>
-                        </a>
-                    ))
-                }
-            </div>
-        </div>
+          ))
+        }
+      </div>
+    </div>
 
-        <div class="px-4 flex space-x-4">
-            <a
-                href="https://github.com/pandaci-com/pandaci"
-                class="justify-center flex items-center transition text-on-surface-variant hover:text-on-surface"
-            >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="size-6"
-                    fill="currentColor"
-                    viewBox="0 0 16 16"
-                >
-                    <path
-                        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
-                    ></path>
-                </svg>
-            </a>
-            <a
-                href="https://app.pandaci.com/login"
-                class="rounded-md hidden sm:block bg-surface px-2.5 py-1.5 text-sm font-semibold hover:ring-surface-high hover:bg-surface-high transition text-on-surface ring-1 shadow-xs ring-outline ring-inset"
-            >
-                Sign in
-            </a>
-            <a
-                href="https://app.pandaci.com/signup"
-                class="rounded-md bg-surface-inverse hidden sm:block hover:bg-surface-inverse/80 px-2.5 py-1.5 text-sm font-semibold transition text-on-surface-inverse
+    <div class="px-4 flex space-x-4">
+      <a
+        href="https://github.com/pandaci-com/pandaci"
+        class="justify-center flex items-center transition text-on-surface-variant hover:text-on-surface"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="size-6"
+          fill="currentColor"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+          ></path>
+        </svg>
+      </a>
+      <a
+        href="https://app.pandaci.com/login"
+        class="rounded-md hidden sm:block bg-surface px-2.5 py-1.5 text-sm font-semibold hover:ring-surface-high hover:bg-surface-high transition text-on-surface ring-1 shadow-xs ring-outline ring-inset"
+      >
+        Sign in
+      </a>
+      <a
+        href="https://app.pandaci.com/signup"
+        class="rounded-md bg-surface-inverse hidden sm:block hover:bg-surface-inverse/80 px-2.5 py-1.5 text-sm font-semibold transition text-on-surface-inverse
          shadow-xs"
-            >
-                Get started
-            </a>
+      >
+        Get started
+      </a>
 
-            <Mobile client:load />
-        </div>
-    </nav>
+      <Mobile client:load />
+    </div>
+  </nav>
 </header>
